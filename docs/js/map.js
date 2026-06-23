@@ -1,5 +1,6 @@
 (function () {
   const DATA_URL = "data/incidents.geojson";
+  const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@Reckless-Rides-UK";
   const DEFAULT_CENTER = [54.5, -3.5];
   const DEFAULT_ZOOM = 6;
 
@@ -21,16 +22,18 @@
     const title = escapeHtml(props.title || "Incident");
     const when = escapeHtml(props.recorded_bst || props.recorded_utc || "");
     const yt = props.youtube_url
-      ? `<a href="${escapeHtml(props.youtube_url)}" target="_blank" rel="noopener">Watch on YouTube</a>`
+      ? `<a href="${escapeHtml(props.youtube_url)}" target="_blank" rel="noopener noreferrer">Watch clip</a>`
       : "";
+    const channel = `<a href="${YOUTUBE_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Channel (@Reckless-Rides-UK)</a>`;
     const maps = props.map_url
-      ? `<a href="${escapeHtml(props.map_url)}" target="_blank" rel="noopener">Open in Google Maps</a>`
+      ? `<a href="${escapeHtml(props.map_url)}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>`
       : "";
+    const linkParts = [yt, channel, maps].filter(Boolean);
     return `
       <div class="popup-body">
         <p class="popup-title">${title}</p>
         ${when ? `<p class="popup-time">${when}</p>` : ""}
-        <div class="popup-links">${yt}${maps ? (yt ? "<br>" : "") + maps : ""}</div>
+        <div class="popup-links">${linkParts.join("<br>")}</div>
       </div>`;
   }
 
