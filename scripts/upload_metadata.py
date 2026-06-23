@@ -89,6 +89,12 @@ def build_description(
     if notes:
         parts += ["", f"Notes: {notes}"]
     parts += ["", f"Police report: {police_ref or '[pending]'}"]
+    controller_line = read_channel("data-controller-line.txt")
+    ico_line = read_channel("ico-registration-line.txt")
+    if controller_line:
+        parts += ["", controller_line]
+    if ico_line:
+        parts.append(ico_line)
     if footer:
         parts += ["", footer]
     return "\n".join(parts)

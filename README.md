@@ -6,6 +6,8 @@ Nationwide UK evidence project — public documentation, compliance standards, a
 
 | | |
 |---|---|
+| **Operator / controller** | **Dynamic Devices Ltd** (England & Wales) |
+| **ICO registration** | Data protection fee paid (Tier 1 micro; application **C1966226**; public **Z** reference pending) |
 | **Site** | [recklessrides.uk](https://recklessrides.uk) (incident map) |
 | **Repo** | [github.com/DynamicDevices/reckless-rides-uk](https://github.com/DynamicDevices/reckless-rides-uk) |
 | **Compliance** | [COMPLIANCE-STATEMENT.md](COMPLIANCE-STATEMENT.md) |

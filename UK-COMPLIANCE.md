@@ -381,6 +381,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | Operator/ICO surfaced on site, channel copy, video descriptions (Dynamic Devices Ltd) | Alex Lennon |
 | 2026-06-23 | ICO registration submitted (Dynamic Devices Ltd, Tier 1 DD C1966226); Appendix A LIA signed | Alex Lennon |
 | 2026-06-23 | Move to DynamicDevices GitHub org; privacy contact ajlennon@dynamicdevices.co.uk; controller Dynamic Devices Ltd | — |
 | 2026-06-23 | v1.0 release: nationwide scope, @Reckless-Rides-UK, upload branding pipeline, rides-imports watcher, channel art | — |

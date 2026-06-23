@@ -50,6 +50,18 @@ header .subtitle {
   max-width: 42rem;
 }
 
+header .operator {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  max-width: 42rem;
+}
+
+header .operator strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 header nav {
   margin-top: 0.75rem;
   display: flex;

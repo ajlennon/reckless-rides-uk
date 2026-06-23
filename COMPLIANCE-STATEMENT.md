@@ -8,7 +8,7 @@
 **Channel:** [@Reckless-Rides-UK](https://www.youtube.com/@Reckless-Rides-UK)  
 **Public site:** [recklessrides.uk](https://recklessrides.uk)  
 **Public document:** [github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.5  
+**Version:** 1.6  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
@@ -19,6 +19,8 @@
 Reckless Rides UK documents **dangerous and illegal cycling in the United Kingdom** — including **pavement and footpath riding**, **reckless road cycling**, **delivery bikes**, and similar behaviour. Our purpose is **pedestrian safety**, **road-safety awareness**, and **supporting proper reporting to the police** where appropriate.
 
 We do **not** operate this project to harass, identify, or encourage action against private individuals. We describe **observed behaviour** (for example, riding on a pavement or cycling dangerously on the road), not personal attacks.
+
+Reckless Rides UK is **operated by Dynamic Devices Ltd**, a limited company registered in England & Wales. We are **registered with the UK Information Commissioner’s Office (ICO)** and pay the annual data protection fee as a **Tier 1 micro** organisation. This is a structured evidence and awareness programme with documented controls — not informal or vigilante activity.
 
 **Awareness · Evidence · Change**
 
