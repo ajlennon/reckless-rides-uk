@@ -26,3 +26,9 @@ register/import-inbox.log
 # Python bytecode (pre-commit py_compile)
 __pycache__/
 *.py[cod]
+
+# Branding — only YouTube-sized production assets are tracked
+branding/*
+!branding/reckless-rides-channel-icon-800x800.png
+!branding/reckless-rides-channel-banner-2560x1440.png
+!branding/reckless-rides-watermark-150x150.png
