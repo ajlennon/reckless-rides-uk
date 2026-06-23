@@ -175,7 +175,7 @@ We reduce the risk of Community Guidelines strikes or channel termination by:
 
 | Risk | Control |
 |------|---------|
-| **Harassment / cyberbullying** | No naming individuals; face blur; no “find this person” commentary; moderate/remove abusive comments |
+| **Harassment / cyberbullying** | No naming individuals; face blur; no “find this person” commentary; **comments disabled** on all videos (Studio, 2026-06-23) |
 | **Privacy violations** | Anonymisation pipeline; private-until-reviewed; takedown within 7 days |
 | **Vigilante / incitement** | Channel guidelines prohibit confrontation; factual titles (“cycling incident”, time, place) |
 | **Repeated targeting** | Do not build series focused on one identifiable rider |
@@ -215,7 +215,7 @@ Published on the channel (keep in sync with [`channel/description.txt`](channel/
 
 ## 9. Individual rights — procedure
 
-When someone contacts us (email, YouTube message, comment) saying they appear in footage:
+When someone contacts us (email or YouTube private message — **comments disabled**) saying they appear in footage:
 
 | Right | Our response |
 |-------|----------------|
@@ -241,7 +241,7 @@ GDPR is not the only risk. Public publication engages:
 
 ### 10.2 Communications offences
 
-[Malicious Communications Act 1988](https://www.legislation.gov.uk/ukpga/1988/27/contents) / [Communications Act 2003 s.127](https://www.legislation.gov.uk/ukpga/2003/21/section/127) — threatening or grossly offensive material online. **Controls:** moderate comments; remove abuse.
+[Malicious Communications Act 1988](https://www.legislation.gov.uk/ukpga/1988/27/contents) / [Communications Act 2003 s.127](https://www.legislation.gov.uk/ukpga/2003/21/section/127) — threatening or grossly offensive material online. **Controls:** comments **disabled** on all videos (2026-06-23); no abusive narration or titles.
 
 ### 10.3 Defamation
 
@@ -381,6 +381,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | YouTube comments disabled on all videos (Studio) | Alex Lennon |
 | 2026-06-23 | Operator/ICO surfaced on site, channel copy, video descriptions (Dynamic Devices Ltd) | Alex Lennon |
 | 2026-06-23 | ICO registration submitted (Dynamic Devices Ltd, Tier 1 DD C1966226); Appendix A LIA signed | Alex Lennon |
 | 2026-06-23 | Move to DynamicDevices GitHub org; privacy contact ajlennon@dynamicdevices.co.uk; controller Dynamic Devices Ltd | — |

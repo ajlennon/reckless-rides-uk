@@ -8,7 +8,7 @@
 **Channel:** [@Reckless-Rides-UK](https://www.youtube.com/@Reckless-Rides-UK)  
 **Public site:** [recklessrides.uk](https://recklessrides.uk)  
 **Public document:** [github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.6  
+**Version:** 1.7  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
@@ -34,7 +34,7 @@ We have reviewed how UK law and regulation may apply to recording in public plac
 |------|--------------------------------|
 | **UK GDPR & Data Protection Act 2018** | Footage in which a person is identifiable is **personal data**. Public publication on YouTube is **not** treated as purely personal/household use. We act as a **data controller** for material we upload and retain. |
 | **Lawful basis** | We rely primarily on **legitimate interests** (road safety documentation and public interest in unlawful pavement riding and dangerous cycling), balanced against individuals’ rights through **anonymisation**, **limited publication**, and **takedown** procedures. |
-| **Harassment & communications law** | We do not encourage confrontation, “pile-ons”, or repeated targeting of the same individual. Comments that threaten, abuse, or solicit identification are inconsistent with our standards. |
+| **Harassment & communications law** | We do not encourage confrontation, “pile-ons”, or repeated targeting of the same individual. **Comments are disabled** on all videos (2026-06-23) to prevent doxxing and abuse. |
 | **Defamation & misuse of private information** | We use **factual**, **neutral** descriptions of observable conduct. We avoid naming individuals in titles or descriptions unless already necessary for a formal process we are engaged in. |
 | **Highway / road traffic context** | Pavement riding and dangerous cycling may contravene UK highway law depending on circumstances. Documenting this behaviour supports a **public-interest** purpose; it does not remove our obligations to handle personal data fairly. |
 | **Children** | Extra care applies where under-18s may appear. We withhold publication where effective anonymisation is uncertain. |
@@ -61,7 +61,7 @@ We operate on YouTube as [@Reckless-Rides-UK](https://www.youtube.com/@Reckless-
 - Privacy notice on the channel; per-video privacy footer with contact email  
 - Upload **private**, review, then set **public** manually — never skip the review gate  
 - Clips published as standard **Videos** (16:9 letterbox), not Shorts, for searchable descriptions  
-- Moderation of comments; removal of abuse, doxxing, and “identify this person” requests  
+- **Comments disabled** on all videos (YouTube Studio, 2026-06-23) — privacy and harassment risk reduction; contact via email for privacy/takedown  
 
 If YouTube or another platform believes content breaches its terms, we will **engage constructively** and **act promptly** on valid notices and rulings.
 

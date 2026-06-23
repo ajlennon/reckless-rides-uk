@@ -315,7 +315,7 @@ This project is designed to stay within **UK GDPR** and **YouTube Community Guid
 | **GDPR** | Legitimate interests + minimisation; face blur; private-first upload; takedown process |
 | **Harassment** | No naming, no vigilante language, no repeated targeting of one rider |
 | **Privacy** | Originals never published; metadata stripped; contact on every video |
-| **YouTube CGT** | Factual titles; moderate comments; engage with platform notices |
+| **YouTube CGT** | Factual titles; **comments disabled** (2026-06-23); engage with platform notices |
 | **Shorts risk** | 16:9 letterbox so descriptions and compliance footer are searchable |
 
 Full detail: [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) (external) and [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) (operating record).
