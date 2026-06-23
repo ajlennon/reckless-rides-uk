@@ -41,14 +41,16 @@ The UK GDPR does not apply to processing “in the course of a purely personal o
 
 ### ICO registration
 
-Some controllers must pay a fee to the ICO ([registration self-assessment](https://ico.org.uk/for-organisations/data-protection-fee/register/)). **Action:** complete the ICO self-assessment when the project goes live and record the outcome below.
+Controllers that process personal data in scope of UK GDPR must pay a fee to the ICO ([registration](https://ico.org.uk/for-organisations/data-protection-fee/register/)).
 
 | Question | Answer / date |
 |----------|----------------|
-| ICO registration required? | _TBD — register as Dynamic Devices Ltd (Tier 1 micro)_ |
-| Registration reference (if any) | _TBD_ |
-| Date checked | _TBD_ |
+| ICO registration required? | **Yes** — public YouTube publication and private archive of identifiable footage |
 | Registered entity | Dynamic Devices Ltd |
+| Tier / fee | Tier 1 micro — **£47/year** (direct debit) |
+| Registration submitted | **2026-06-23** |
+| Direct debit application | **C1966226** (instruction complete; ICO confirms within ~3 working days) |
+| Public register reference | _Pending — ICO publishes within ~7 working days; add **Z** reference from confirmation email when received_ |
 
 ---
 
@@ -332,8 +334,8 @@ After upload:
 
 Complete one assessment for the **channel programme** (not every clip). Update if practices change.
 
-**Date:** _______________  
-**Reviewer:** _______________
+**Date:** 2026-06-23  
+**Reviewer:** Alex Lennon (Dynamic Devices Ltd)
 
 ### A1 Purpose
 
@@ -367,11 +369,11 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 ### A6 Decision
 
-- [ ] Proceed with current controls  
+- [x] Proceed with current controls  
 - [ ] Proceed with changes: _______________  
 - [ ] Do not publish — reason: _______________
 
-**Sign-off:** _______________
+**Sign-off:** Alex Lennon — 2026-06-23
 
 ---
 
@@ -379,6 +381,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | ICO registration submitted (Dynamic Devices Ltd, Tier 1 DD C1966226); Appendix A LIA signed | Alex Lennon |
 | 2026-06-23 | Move to DynamicDevices GitHub org; privacy contact ajlennon@dynamicdevices.co.uk; controller Dynamic Devices Ltd | — |
 | 2026-06-23 | v1.0 release: nationwide scope, @Reckless-Rides-UK, upload branding pipeline, rides-imports watcher, channel art | — |
 | 2026-06-23 | YouTube handle set to @Reckless-Rides-UK | — |

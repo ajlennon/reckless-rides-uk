@@ -318,7 +318,7 @@ This project is designed to stay within **UK GDPR** and **YouTube Community Guid
 
 Full detail: [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) (external) and [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) (operating record).
 
-**Before scaling:** complete ICO registration self-assessment and sign Appendix A LIA in `UK-COMPLIANCE.md`.
+**Compliance baseline (2026-06-23):** ICO fee registered (Dynamic Devices Ltd); Appendix A LIA signed in `UK-COMPLIANCE.md`. Add ICO public **Z** reference when confirmation email arrives.
 
 ## Incident map (GitHub Pages)
 

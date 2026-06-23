@@ -3,11 +3,12 @@
 **Document purpose:** This statement is provided to **complainants**, **online platforms** (including YouTube), and **law enforcement** to explain how the Reckless Rides UK project is operated, the legal and platform obligations we have considered, and the controls we apply before any clip is made publicly visible.
 
 **Data controller:** Dynamic Devices Ltd (England & Wales)  
+**ICO registration:** Fee paid 23 June 2026 (Tier 1 micro, direct debit; application **C1966226**). Public register reference (**Z** number) pending ICO confirmation — typically within seven working days.  
 **Privacy contact:** [ajlennon@dynamicdevices.co.uk](mailto:ajlennon@dynamicdevices.co.uk)  
 **Channel:** [@Reckless-Rides-UK](https://www.youtube.com/@Reckless-Rides-UK)  
 **Public site:** [recklessrides.uk](https://recklessrides.uk)  
 **Public document:** [github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.4  
+**Version:** 1.5  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
