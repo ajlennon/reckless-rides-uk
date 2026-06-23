@@ -144,6 +144,7 @@ reckless-rides-uk/
     install-import-watcher.sh       Enable import watcher service
     regenerate-upload-metadata.sh   Rebuild *_UPLOAD.json from manifest
     upload_metadata.py              Channel templates → YouTube metadata builder
+    update-youtube-metadata.py      Update title/description/tags on uploaded videos
     upload-incident.sh              Upload *_PUBLISH.mp4 via YouTube API
     youtube-upload.py               Upload implementation
     build-map-data.py               *_UPLOAD.json → docs/data/incidents.geojson
@@ -277,6 +278,14 @@ Regenerate upload metadata after editing channel templates:
 ./scripts/regenerate-upload-metadata.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
 ```
 
+**Update existing YouTube videos** (title, description, tags from `*_UPLOAD.json` — no re-upload):
+
+```bash
+./scripts/update-youtube-metadata.py --all
+# or one incident:
+./scripts/update-youtube-metadata.py DEB-20260623T080303Z_53.4092N_2.9778W_001 --dry-run
+```
+
 Templates live in `channel/` — `upload-title-template.txt`, `video-description-header.txt`, `video-description-footer.txt`, `upload-tags.txt`, `upload-playlist.txt`.
 
 ### Fix Shorts / wrong aspect ratio
@@ -321,7 +330,7 @@ Built from `*_UPLOAD.json` (YouTube URL required; no video or faces). On each pu
 
 ### Custom domain (recklessrides.uk)
 
-**Status (June 2026):** DNS is live on Cloudflare. **http://recklessrides.uk** serves the incident map. **HTTPS** will work after GitHub issues a certificate — enable **Enforce HTTPS** in repo **Settings → Pages** once the checkbox appears.
+**Status (June 2026):** DNS on Cloudflare (grey cloud / DNS only). **https://recklessrides.uk** is live with GitHub Pages TLS (`https_enforced: true`). **www** redirects to the apex.
 
 `docs/CNAME` contains `recklessrides.uk`. Nameservers: Cloudflare (`brit.ns.cloudflare.com`, `jihoon.ns.cloudflare.com`).
 
@@ -344,11 +353,11 @@ dig recklessrides.uk +noall +answer -t A
 dig www.recklessrides.uk +noall +answer -t CNAME
 ```
 
-**GitHub Pages** (already set: custom domain `recklessrides.uk`, build via Actions):
+**GitHub Pages** (custom domain `recklessrides.uk`, build via Actions):
 
-1. Wait until DNS checks pass in repo **Settings → Pages → Custom domain**.
-2. Enable **Enforce HTTPS** (checkbox appears only after GitHub can issue a certificate).
-3. Confirm **https://recklessrides.uk/** and **https://www.recklessrides.uk/** (www redirects per GitHub apex + www rules).
+1. DNS checks pass in repo **Settings → Pages → Custom domain**.
+2. **Enforce HTTPS** is enabled — share **https://recklessrides.uk/** (not `http://`).
+3. **https://www.recklessrides.uk/** redirects to the apex.
 
 **Local preview:**
 
