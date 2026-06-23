@@ -22,7 +22,8 @@ This document records **our intended approach** and **operational controls**. It
 |----------|-------------|
 | **Capture** | Short video on public streets, via Ray-Ban Meta glasses |
 | **Purpose** | Document illegal pavement / footpath riding and dangerous cycling on pavement and road; support pedestrian safety; provide evidence for police (101) where appropriate |
-| **Publication** | Anonymised clips uploaded to YouTube as **private**; set **public** manually after review |
+| **Publication** | Anonymised clips uploaded to YouTube as **private** (automated from import inbox or manual script); set **public** manually after review |
+| **Transparency** | Public incident map at [recklessrides.uk](https://recklessrides.uk) — metadata only, no video |
 | **Retention** | Full originals kept **privately** for possible police handover — **never uploaded** |
 
 We present this as **evidence and road-safety awareness**, not entertainment, “naming and shaming”, or vigilante identification.
@@ -376,6 +377,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | Documentation refresh: README quick links, auto-pipeline workflow, map/DNS status, pre-commit layout; compliance v1.3 incident map | — |
 | 2026-06-23 | Comprehensive review: 16:9 letterbox, map URL fix, YouTube policy section, upload automation, takedown template | — |
 | 2026-06-23 | Rebrand to Reckless Rides UK; scope broadened to pavement and road dangerous cycling; recklessrides.uk custom domain | — |
 

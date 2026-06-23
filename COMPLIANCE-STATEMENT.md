@@ -5,7 +5,7 @@
 **Channel:** [@RecklessRidesUK](https://www.youtube.com/@RecklessRidesUK) *(update in YouTube Studio when handle is changed; legacy handle may still be @Dangerous-eBikers until then)*  
 **Public site:** [recklessrides.uk](https://recklessrides.uk)  
 **Public document:** [github.com/ajlennon/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/ajlennon/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.2  
+**Version:** 1.3  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
@@ -71,7 +71,7 @@ Before any clip is made **publicly visible**, we apply a controlled pipeline des
 | **Original recording** | Retained **privately** with device metadata (time, location). **Not uploaded** to YouTube or public repositories. |
 | **Face anonymisation** | Automated face blurring on a working copy; **manual review** before any upload decision. |
 | **Publish copy** | Embedded GPS/device metadata **removed**; **letterboxed to 1920×1080** so clips appear as standard Videos (not Shorts). |
-| **Upload visibility** | Clips are uploaded as **Private**, reviewed again on the platform, and only then set to **Public** manually. |
+| **Upload visibility** | Clips are uploaded as **Private** (automated via import watcher or manual script), reviewed again on the platform, and only then set to **Public** manually. |
 | **Description** | Factual incident log text; privacy footer with **ajlennon@gmail.com** and link to this statement. |
 | **Evidence integrity** | Original files and integrity records retained for possible handover to police under proper process. |
 
@@ -87,6 +87,7 @@ Our YouTube channel description states, in summary:
 - Faces are blurred before upload; file metadata is stripped from uploads  
 - Time and location may appear in descriptions for incident logging  
 - Uploads are private until manually reviewed, then made public  
+- A public **incident map** at [recklessrides.uk](https://recklessrides.uk) lists uploaded incidents (metadata only — no video)  
 - Individuals may contact us to request removal or correction  
 
 We aim to meet UK GDPR principles including **lawfulness, fairness, transparency, data minimisation, storage limitation, and accountability**.

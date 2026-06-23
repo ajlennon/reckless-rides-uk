@@ -1,12 +1,19 @@
 # Reckless Rides UK
 
-Public documentation, compliance standards, and ingest tooling for the [@RecklessRidesUK](https://www.youtube.com/@RecklessRidesUK) YouTube channel — timestamped evidence of illegal pavement riding and dangerous cycling in the UK (delivery bikes, normal bikes, young riders).
+Public documentation, compliance standards, and ingest tooling for the [@RecklessRidesUK](https://www.youtube.com/@RecklessRidesUK) YouTube channel — timestamped evidence of dangerous and illegal cycling in the UK: pavement and footpath riding, reckless road cycling, delivery bikes, and similar behaviour.
 
 **Pavement & road — illegal footway riding and dangerous cycling in the UK** · **Awareness · Evidence · Change**
 
-**Video evidence is never stored in this repository** (see `.gitignore`). `*_UPLOAD.json` metadata (titles, descriptions, tags, YouTube URLs — no faces or video) **is** tracked for transparency.
+| | |
+|---|---|
+| **Site** | [recklessrides.uk](https://recklessrides.uk) (incident map) |
+| **Repo** | [github.com/ajlennon/reckless-rides-uk](https://github.com/ajlennon/reckless-rides-uk) |
+| **Compliance** | [COMPLIANCE-STATEMENT.md](COMPLIANCE-STATEMENT.md) |
+| **Privacy / takedown** | [ajlennon@gmail.com](mailto:ajlennon@gmail.com) |
 
-> **Repository:** [github.com/ajlennon/reckless-rides-uk](https://github.com/ajlennon/reckless-rides-uk). Incident IDs keep the **DEB-** prefix.
+**Video evidence is never stored in this repository** (see `.gitignore`). `*_UPLOAD.json` metadata (titles, descriptions, tags, YouTube URLs — no faces or video) **is** tracked for transparency and powers the public map.
+
+Incident IDs use the legacy **`DEB-`** prefix (unchanged after rebrand).
 
 ## Compliance & standards (public)
 
@@ -31,7 +38,11 @@ Mandatory path from capture to upload. **Never skip the manual gates.** Full leg
 flowchart TD
     subgraph capture ["1 · Capture"]
         A["Record in public<br/>(Ray-Ban Meta glasses)"]
-        B["Transfer to PC<br/>(LocalSend / import)"]
+        B["LocalSend → bike-imports/<br/>or manual path"]
+    end
+
+    subgraph auto ["Optional: import watcher"]
+        B2["process-import-inbox.sh"]
     end
 
     subgraph ingest ["2 · ingest-incident.sh"]
@@ -50,8 +61,8 @@ flowchart TD
         Q["DO NOT PUBLISH<br/>re-blur · mute · or withhold"]
     end
 
-    subgraph publish ["4 · YouTube"]
-        L["Upload PUBLISH.mp4<br/>PRIVATE + privacy footer"]
+    subgraph publish ["4 · YouTube (private auto-upload)"]
+        L["upload-pending-incidents.sh<br/>PRIVATE + privacy footer"]
         M["YouTube PRIVATE<br/>awaiting your review"]
         S{"Final review<br/>on YouTube?"}
         T["Set PUBLIC manually<br/>in YouTube Studio"]
@@ -68,7 +79,10 @@ flowchart TD
         R["Take down YouTube clip<br/>delete or retain originals per policy"]
     end
 
-    A --> B --> C
+    A --> B
+    B --> B2
+    B --> C
+    B2 --> C
     C --> D
     C --> E --> F
     C --> G
@@ -110,6 +124,9 @@ flowchart TD
 reckless-rides-uk/
   branding/              Channel art and watermark (safe to keep in git)
   channel/               Copy-paste text for YouTube Studio
+  config/                import-inbox.conf, OAuth secrets (gitignored; see .example)
+  docs/                  GitHub Pages site + incident map (Leaflet + GeoJSON)
+  .github/workflows/     Pages CI (build map, deploy docs/)
   evidence/
     originals/           Full metadata, identifiable faces — POLICE ONLY
     processed/           Face-blurred review copies (gitignored) + *_UPLOAD.json (tracked)
@@ -123,11 +140,15 @@ reckless-rides-uk/
     republish-incident.sh           Re-letterbox + metadata (fix Shorts / wrong aspect)
     process-import-inbox.sh         One-shot scan of glasses import inbox
     watch-import-inbox.sh           Poll inbox (used by systemd)
-    upload-pending-incidents.sh      Upload ingested clips missing a YouTube URL
+    upload-pending-incidents.sh     Upload ingested clips missing a YouTube URL
     install-import-watcher.sh       Enable import watcher service
     regenerate-upload-metadata.sh   Rebuild *_UPLOAD.json from manifest
     upload-incident.sh              Upload *_PUBLISH.mp4 via YouTube API
     youtube-upload.py               Upload implementation
+    build-map-data.py               *_UPLOAD.json → docs/data/incidents.geojson
+    install-pre-commit.sh           Install git pre-commit hooks
+    pre-commit-check.sh             Run all hooks manually
+  .pre-commit-config.yaml           Hooks: map build, JSON, shell, YAML, path checks
 ```
 
 ## Filename convention
@@ -297,6 +318,8 @@ Built from `*_UPLOAD.json` (YouTube URL required; no video or faces). On each pu
 
 ### Custom domain (recklessrides.uk)
 
+**Status (June 2026):** DNS is live on Cloudflare. **http://recklessrides.uk** serves the incident map. **HTTPS** will work after GitHub issues a certificate — enable **Enforce HTTPS** in repo **Settings → Pages** once the checkbox appears.
+
 `docs/CNAME` contains `recklessrides.uk`. Nameservers: Cloudflare (`brit.ns.cloudflare.com`, `jihoon.ns.cloudflare.com`).
 
 **Cloudflare DNS** (Dashboard → **DNS** → **Records**). Set every record below to **DNS only** (grey cloud, **not** proxied) — Cloudflare proxy breaks GitHub Pages TLS.
@@ -372,7 +395,7 @@ Manifest includes SHA-256 hashes so integrity can be checked.
 Optional export:
 
 ```bash
-INC=DEB-20260623T080303Z_53.4092N_002.9778W_001
+INC=DEB-20260623T080303Z_53.4092N_2.9778W_001
 zip -j "evidence/export/${INC}_police_bundle.zip" \
   "evidence/originals/${INC}_ORIGINAL.mov" \
   "register/manifests/${INC}_MANIFEST.json"
