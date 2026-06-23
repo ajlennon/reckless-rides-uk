@@ -1,0 +1,14 @@
+# Evidence media — never commit originals or derivatives
+evidence/originals/*
+!evidence/originals/.gitkeep
+evidence/processed/*
+!evidence/processed/.gitkeep
+evidence/publish/*
+!evidence/publish/.gitkeep
+evidence/export/*
+!evidence/export/.gitkeep
+
+# Incident register may contain GPS, police refs, YouTube URLs
+register/incidents.csv
+register/manifests/*.json
+!register/manifests/.gitkeep
