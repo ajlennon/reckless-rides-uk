@@ -247,7 +247,8 @@ upload = {
         "title": title,
         "description": description,
         "tags": default_tags,
-        "privacy": "unlisted",
+        "privacy": "private",
+        "privacy_after_review": "public",
         "categoryId": "22",
         "madeForKids": False,
         "playlist": "2026 Incidents",
@@ -285,5 +286,5 @@ Ingest complete.
   Upload metadata   : $UPLOAD_META_PATH
   Manifest          : $MANIFEST_FILE
 
-Upload $PUB_FILE using metadata in $UPLOAD_META_FILE (unlisted). Hand ORIGINAL + manifest to police if reported.
+Upload $PUB_FILE as **private** using metadata in $UPLOAD_META_FILE. After manual review, set visibility to **public** in YouTube Studio. Hand ORIGINAL + manifest to police if reported.
 EOF

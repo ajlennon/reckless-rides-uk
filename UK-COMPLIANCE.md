@@ -21,7 +21,7 @@ This document records **our intended approach** and **operational controls**. It
 |----------|-------------|
 | **Capture** | Short video on public streets, via Ray-Ban Meta glasses |
 | **Purpose** | Document illegal pavement / footpath e-bike riding; support pedestrian safety; provide evidence for police (101) where appropriate |
-| **Publication** | Anonymised clips on YouTube (default **unlisted**), with factual metadata |
+| **Publication** | Anonymised clips uploaded to YouTube as **private**; set **public** manually after review |
 | **Retention** | Full originals kept **privately** for possible police handover — **never uploaded** |
 
 We present this as **evidence and road-safety awareness**, not entertainment, “naming and shaming”, or vigilante identification.
@@ -72,7 +72,7 @@ We apply the ICO three-part test ([legitimate interests guidance](https://ico.or
 
 1. **Purpose** — document a genuine safety/highway issue; not harassment or commercial exploitation of individuals.  
 2. **Necessity** — publication is limited to short, anonymised clips; originals only retained for police/reporting.  
-3. **Balancing** — we reduce impact on bystanders and riders via **face blur**, **no naming**, **unlisted** uploads, and **takedown** on request.
+3. **Balancing** — we reduce impact on bystanders and riders via **face blur**, **no naming**, **private-until-reviewed** uploads, and **takedown** on request.
 
 **Action:** complete and retain a **Legitimate Interests Assessment (LIA)** per Appendix A when we publish routinely.
 
@@ -108,13 +108,40 @@ May apply where processing is **with a view to publication** of journalistic mat
 
 ## 6. Technical & operational controls
 
-These are **mandatory** before any YouTube upload:
+These are **mandatory** before any YouTube upload. **Workflow diagram:** [README.md — Publication workflow](README.md#publication-workflow-privacy--compliance).
 
-```
-Source .MOV  →  ingest-incident.sh  →  ORIGINAL (private)
-                                   →  PROCESSED (face blur)
-                                   →  PUBLISH (metadata stripped)
-                                   →  UPLOAD.json (YouTube text)
+```mermaid
+flowchart LR
+    subgraph private ["Never published"]
+        O["ORIGINAL<br/>identifiable"]
+    end
+
+    subgraph pipeline ["ingest-incident.sh"]
+        P["PROCESSED<br/>face blur"]
+        U["PUBLISH<br/>no metadata"]
+    end
+
+    subgraph gates ["Manual gates"]
+        G{"Blur OK?<br/>No children?<br/>Factual text?"}
+    end
+
+    subgraph public ["YouTube"]
+        YP["PRIVATE<br/>on upload"]
+        G2{"Reviewed<br/>on YouTube?"}
+        YU["PUBLIC<br/>manual in Studio"]
+    end
+
+    O --> P --> G
+    G -->|Pass| U --> YP --> G2
+    G2 -->|Pass| YU
+    G -->|Fail| X["Withhold"]
+    G2 -->|Fail| X
+    O -.->|101 only| POL["Police"]
+
+    style O fill:#2d3748,stroke:#e53e3e,color:#fff
+    style X fill:#742a2a,stroke:#e53e3e,color:#fff
+    style YP fill:#4a5568,stroke:#a0aec0,color:#fff
+    style YU fill:#1a365d,stroke:#63b3ed,color:#fff
 ```
 
 | Control | Implementation |
@@ -123,7 +150,7 @@ Source .MOV  →  ingest-incident.sh  →  ORIGINAL (private)
 | **Face anonymisation** | `deface --replacewith blur --mask-scale 1.3` — manual review each clip |
 | **Metadata stripped on publish** | `ffmpeg -map_metadata -1` on `*_PUBLISH.mp4` |
 | **Controlled evidence chain** | `DEB-{UTC}_{LAT}_{LON}_{NNN}_*` naming + manifest SHA-256 |
-| **Default unlisted** | `*_UPLOAD.json` → `"privacy": "unlisted"` |
+| **Default private** | `*_UPLOAD.json` → `"privacy": "private"`; set **public** in YouTube Studio after review |
 | **No vigilante language** | Channel guidelines; factual titles only |
 
 ### Known gaps (mitigate manually)
@@ -146,7 +173,7 @@ Published on the channel (keep in sync with [`channel/description.txt`](channel/
 - How to request removal  
 - Link to police reporting (101) — we do not replace formal reports  
 
-**Contact for data/privacy requests:** _add a dedicated email in YouTube Studio when ready_.
+**Contact for data/privacy requests:** [ajlennon@gmail.com](mailto:ajlennon@gmail.com) (also set in YouTube Studio).
 
 ---
 
@@ -240,7 +267,9 @@ Before upload:
 - [ ] Watched full `*_PROCESSED.mp4` — faces blurred; children not identifiable  
 - [ ] `*_PUBLISH.mp4` has no GPS/device metadata (`ffprobe` check)  
 - [ ] Title/description from `*_UPLOAD.json` — factual, no names, no plate numbers  
-- [ ] Upload **unlisted** unless deliberate decision to go public (re-run LIA if public)  
+- [ ] Upload **`private`** using `*_UPLOAD.json` metadata  
+- [ ] Review clip on YouTube while still **private**  
+- [ ] Set **public** in YouTube Studio only after review passes (re-run LIA if you change mind about public visibility)  
 - [ ] Privacy footer present in description  
 - [ ] Incident row in `register/incidents.csv`  
 
@@ -266,8 +295,8 @@ After upload:
 
 | File | Role |
 |------|------|
-| [`README.md`](README.md) | Evidence workflow |
-| [`channel/description.txt`](channel/description.txt) | Public privacy notice |
+| [`README.md`](README.md) | Evidence workflow + [full publication diagram](README.md#publication-workflow-privacy--compliance) |
+| [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) | **External** — for complainants, platforms, police |
 | [`channel/guidelines.txt`](channel/guidelines.txt) | Channel rules |
 | [`register/incidents.csv`](register/incidents.csv) | Processing record |
 | [`register/manifests/*_MANIFEST.json`](register/manifests/) | Integrity & file map |
@@ -293,7 +322,7 @@ Is publication necessary? Could the purpose be achieved without identifiable dat
 |--------|------------|
 | Police report only, no YouTube | Achieves enforcement but not awareness/education |
 | YouTube with full faces | Disproportionate privacy intrusion |
-| **YouTube with blur, unlisted, factual metadata** | **Chosen — necessary and proportionate** |
+| **YouTube with blur, private until reviewed, factual metadata** | **Chosen — necessary and proportionate** |
 
 ### A3 Balancing — impact on individuals
 
@@ -305,7 +334,7 @@ Is publication necessary? Could the purpose be achieved without identifiable dat
 
 ### A4 Reasonable expectations
 
-People in public places may expect observation but **not** global publication. Mitigations (blur, unlisted, limited description) reduce surprise.
+People in public places may expect observation but **not** global publication. Mitigations (blur, private-until-reviewed, limited description) reduce surprise.
 
 ### A5 Children
 
@@ -325,7 +354,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
-| 2026-06-23 | Initial version — GDPR approach, UK law overview, checklists, LIA template | — |
+| 2026-06-23 | Added external COMPLIANCE-STATEMENT.md for complainants, platforms, police | — |
 
 ---
 
