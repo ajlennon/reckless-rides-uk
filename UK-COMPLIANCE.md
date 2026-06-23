@@ -24,7 +24,7 @@ This document records **our intended approach** and **operational controls**. It
 | **Capture** | Short video on public streets, via Ray-Ban Meta glasses |
 | **Purpose** | Document illegal pavement / footpath riding and dangerous cycling on pavement and road; support pedestrian safety; provide evidence for police (101) where appropriate |
 | **Publication** | Anonymised clips uploaded to YouTube as **private** (automated from import inbox or manual script); set **public** manually after review |
-| **Transparency** | Public incident map at [recklessrides.uk](https://recklessrides.uk) — metadata only, no video |
+| **Transparency** | Public incident map at [recklessrides.uk](https://recklessrides.uk) — incident metadata on-site; each pin **links to the YouTube clip** (video is not embedded or hosted on the map site) |
 | **Retention** | Full originals kept **privately** for possible police handover — **never uploaded** |
 
 We present this as **evidence and road-safety awareness**, not entertainment, “naming and shaming”, or vigilante identification.
@@ -381,6 +381,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | Map/compliance text: pins link to YouTube; site does not embed video | Alex Lennon |
 | 2026-06-23 | YouTube comments disabled on all videos (Studio) | Alex Lennon |
 | 2026-06-23 | Operator/ICO surfaced on site, channel copy, video descriptions (Dynamic Devices Ltd) | Alex Lennon |
 | 2026-06-23 | ICO registration submitted (Dynamic Devices Ltd, Tier 1 DD C1966226); Appendix A LIA signed | Alex Lennon |

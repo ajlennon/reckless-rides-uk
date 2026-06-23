@@ -8,7 +8,7 @@
 **Channel:** [@Reckless-Rides-UK](https://www.youtube.com/@Reckless-Rides-UK)  
 **Public site:** [recklessrides.uk](https://recklessrides.uk)  
 **Public document:** [github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.7  
+**Version:** 1.8  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
@@ -92,7 +92,7 @@ Our YouTube channel description states, in summary:
 - Faces are blurred before upload; file metadata is stripped from uploads  
 - Time and location may appear in descriptions for incident logging  
 - Uploads are private until manually reviewed, then made public  
-- A public **incident map** at [recklessrides.uk](https://recklessrides.uk) lists uploaded incidents (metadata only — no video)  
+- A public **incident map** at [recklessrides.uk](https://recklessrides.uk) lists uploaded incidents (time, location, title) and **links to each clip on YouTube** — the map does not embed or host video files  
 - Individuals may contact us to request removal or correction  
 
 We aim to meet UK GDPR principles including **lawfulness, fairness, transparency, data minimisation, storage limitation, and accountability**.

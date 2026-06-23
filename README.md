@@ -326,7 +326,7 @@ Full detail: [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) (external) and
 
 Public map of uploaded incidents: **https://recklessrides.uk/** (canonical) · also **https://dynamicdevices.github.io/reckless-rides-uk/**
 
-Built from `*_UPLOAD.json` (YouTube URL required; no video or faces). On each push to `main`, GitHub Actions runs `scripts/build-map-data.py` and deploys `docs/`.
+Built from `*_UPLOAD.json` (YouTube URL required). Pins show incident metadata and **link to YouTube** — no video embedded on the map site. On each push to `main`, GitHub Actions runs `scripts/build-map-data.py` and deploys `docs/`.
 
 **First-time setup:** repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
