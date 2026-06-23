@@ -1,0 +1,49 @@
+{
+  "schema": "dangerous-ebikers-youtube-upload/v1",
+  "incident_id": "002",
+  "base_name": "DEB-20260623T143650Z_53.4086N_2.9790W_002",
+  "files": {
+    "upload_video": "evidence/publish/DEB-20260623T143650Z_53.4086N_2.9790W_002_PUBLISH.mp4",
+    "processed_video": "evidence/processed/DEB-20260623T143650Z_53.4086N_2.9790W_002_PROCESSED.mp4"
+  },
+  "youtube": {
+    "title": "Pavement e-bike \u2014 2026-06-23 15:36:50 BST",
+    "description": "Incident log (evidence archive)\n\nRecorded: 2026-06-23T14:36:50Z (2026-06-23 15:36:50 BST)\nGPS: 53.4086\u00b0N, 2.9790\u00b0W\nMap: https://www.google.com/maps?q=53.4086,-2.9790\nDevice: Ray-Ban Meta Smart Glasses 2\n\nNotes: auto-import from glasses inbox\n\nPolice report: [pending]\n\n---\nPRIVACY: This upload is an anonymised copy (faces blurred; file metadata removed). Original footage is retained privately and may be shared with police when reported via 101. To request removal or correction: ajlennon@gmail.com\n\nCompliance: https://github.com/ajlennon/dangerous-ebikers/blob/main/COMPLIANCE-STATEMENT.md\n\nDangerous eBikers | Awareness \u2022 Evidence \u2022 Change",
+    "tags": [
+      "pavement ebike",
+      "pavement cycling UK",
+      "UK ebike",
+      "e-bike UK",
+      "road safety",
+      "pedestrian safety",
+      "footpath cycling",
+      "evidence log",
+      "UK cycling",
+      "micromobility",
+      "Highway Code",
+      "Dangerous eBikers"
+    ],
+    "privacy": "private",
+    "privacy_after_review": "public",
+    "categoryId": "22",
+    "madeForKids": false,
+    "playlist": "2026 Incidents",
+    "video_id": "",
+    "url": "",
+    "studio_url": "",
+    "uploaded_utc": "",
+    "privacy_at_upload": ""
+  },
+  "incident": {
+    "recorded_utc": "2026-06-23T14:36:50Z",
+    "recorded_bst": "2026-06-23 15:36:50 BST",
+    "latitude": "53.4086",
+    "longitude": "-2.9790",
+    "location_label": "53.4086N_2.9790W",
+    "map_url": "https://www.google.com/maps?q=53.4086,-2.9790",
+    "device": "Ray-Ban Meta Smart Glasses 2"
+  },
+  "police_ref": "",
+  "youtube_url": "",
+  "notes": "auto-import from glasses inbox"
+}

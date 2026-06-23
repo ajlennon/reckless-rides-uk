@@ -77,6 +77,16 @@ if notes:
     description_parts += ["", f"Notes: {notes}"]
 description_parts += ["", "Police report: [pending]", "", footer]
 
+yt_block = manifest.get("youtube") or {}
+youtube_url = manifest.get("youtube_url", "") or yt_block.get("url", "")
+if youtube_url and not yt_block.get("video_id"):
+    import re
+    m = re.search(r"(?:[?&]v=|youtu\.be/)([^&?#]+)", youtube_url)
+    if m:
+        yt_block = {**yt_block, "video_id": m.group(1), "url": youtube_url}
+if yt_block.get("video_id") and not yt_block.get("studio_url"):
+    yt_block["studio_url"] = f"https://studio.youtube.com/video/{yt_block['video_id']}/edit"
+
 upload = {
     "schema": "dangerous-ebikers-youtube-upload/v1",
     "incident_id": manifest["incident_id"],
@@ -91,6 +101,11 @@ upload = {
         "categoryId": "22",
         "madeForKids": False,
         "playlist": "2026 Incidents",
+        "video_id": yt_block.get("video_id", ""),
+        "url": yt_block.get("url", youtube_url),
+        "studio_url": yt_block.get("studio_url", ""),
+        "uploaded_utc": yt_block.get("uploaded_utc", ""),
+        "privacy_at_upload": yt_block.get("privacy_at_upload", ""),
     },
     "incident": {
         "recorded_utc": utc_recorded,
@@ -102,7 +117,7 @@ upload = {
         "device": device,
     },
     "police_ref": manifest.get("police_ref", ""),
-    "youtube_url": manifest.get("youtube_url", ""),
+    "youtube_url": youtube_url,
     "notes": notes,
 }
 upload_path.write_text(json.dumps(upload, indent=2) + "\n")

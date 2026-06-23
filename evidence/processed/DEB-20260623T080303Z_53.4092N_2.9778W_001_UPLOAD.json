@@ -1,0 +1,52 @@
+{
+  "schema": "dangerous-ebikers-youtube-upload/v1",
+  "incident_id": "001",
+  "base_name": "DEB-20260623T080303Z_53.4092N_2.9778W_001",
+  "files": {
+    "upload_video": "evidence/publish/DEB-20260623T080303Z_53.4092N_2.9778W_001_PUBLISH.mp4",
+    "processed_video": "evidence/processed/DEB-20260623T080303Z_53.4092N_2.9778W_001_PROCESSED.mp4"
+  },
+  "youtube": {
+    "title": "Pavement e-bike \u2014 2026-06-23 09:03:03 BST",
+    "description": "Incident log (evidence archive)\n\nRecorded: 2026-06-23T08:03:03Z (2026-06-23 09:03:03 BST)\nGPS: 53.4092\u00b0N, 2.9778\u00b0W\nMap: https://www.google.com/maps?q=53.4092,-2.9778\nDevice: Ray-Ban Meta Smart Glasses 2\n\nNotes: First ingest - pavement ebike Liverpool\n\nPolice report: [pending]\n\n---\nPRIVACY: This upload is an anonymised copy (faces blurred; file metadata removed). Original footage is retained privately and may be shared with police when reported via 101. To request removal, contact the channel.\n\nDangerous eBikers | Awareness \u2022 Evidence \u2022 Change",
+    "tags": [
+      "pavement ebike",
+      "illegal pavement cycling",
+      "UK ebike",
+      "e-bike UK",
+      "road safety",
+      "pedestrian safety",
+      "pavement cycling",
+      "footpath cycling",
+      "evidence log",
+      "geotagged footage",
+      "UK cycling",
+      "dangerous cycling",
+      "micromobility",
+      "Highway Code",
+      "Dangerous eBikers"
+    ],
+    "privacy": "private",
+    "privacy_after_review": "public",
+    "categoryId": "22",
+    "madeForKids": false,
+    "playlist": "2026 Incidents",
+    "video_id": "J8sZmyFdlcI",
+    "url": "https://www.youtube.com/watch?v=J8sZmyFdlcI",
+    "studio_url": "https://studio.youtube.com/video/J8sZmyFdlcI/edit",
+    "uploaded_utc": "",
+    "privacy_at_upload": "private"
+  },
+  "incident": {
+    "recorded_utc": "2026-06-23T08:03:03Z",
+    "recorded_bst": "2026-06-23 09:03:03 BST",
+    "latitude": "53.4092",
+    "longitude": "-2.9778",
+    "location_label": "53.4092N_2.9778W",
+    "map_url": "https://www.google.com/maps?q=53.4092,-2.9778",
+    "device": "Ray-Ban Meta Smart Glasses 2"
+  },
+  "police_ref": "",
+  "youtube_url": "https://www.youtube.com/watch?v=J8sZmyFdlcI",
+  "notes": "First ingest - pavement ebike Liverpool"
+}

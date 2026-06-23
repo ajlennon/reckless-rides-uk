@@ -1,0 +1,10 @@
+# Copy to config/import-inbox.conf and adjust if needed.
+# Files dropped here (via LocalSend from Ray-Ban Meta glasses) are auto-ingested.
+
+IMPORT_INBOX="/home/ajlennon/LocalSend/bike-imports"
+POLL_SECONDS=10
+STABLE_CHECKS=3
+STABLE_INTERVAL=2
+
+# Notes appended to ingest-incident.sh for auto-imported clips
+IMPORT_NOTES="auto-import from glasses inbox"

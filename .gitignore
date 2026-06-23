@@ -3,6 +3,7 @@ evidence/originals/*
 !evidence/originals/.gitkeep
 evidence/processed/*
 !evidence/processed/.gitkeep
+!evidence/processed/*_UPLOAD.json
 evidence/publish/*
 !evidence/publish/.gitkeep
 evidence/export/*
@@ -17,3 +18,7 @@ register/takedowns.csv
 # YouTube OAuth secrets (never commit)
 config/client_secret.json
 config/youtube-token.json
+config/import-inbox.conf
+
+# Import watcher log (may contain paths)
+register/import-inbox.log

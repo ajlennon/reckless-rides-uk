@@ -277,6 +277,11 @@ upload = {
         "categoryId": "22",
         "madeForKids": False,
         "playlist": "2026 Incidents",
+        "video_id": "",
+        "url": "",
+        "studio_url": "",
+        "uploaded_utc": "",
+        "privacy_at_upload": "",
     },
     "incident": {
         "recorded_utc": utc_recorded,

@@ -2,7 +2,7 @@
 
 Public documentation, compliance standards, and ingest tooling for the [@Dangerous-eBikers](https://www.youtube.com/@Dangerous-eBikers) YouTube channel — timestamped evidence of illegal pavement e-bike riding in the UK.
 
-**Video evidence is never stored in this repository** (see `.gitignore`).
+**Video evidence is never stored in this repository** (see `.gitignore`). `*_UPLOAD.json` metadata (titles, descriptions, tags, YouTube URLs — no faces or video) **is** tracked for transparency.
 
 ## Compliance & standards (public)
 
@@ -107,7 +107,7 @@ dangerous-ebikers/
   channel/               Copy-paste text for YouTube Studio
   evidence/
     originals/           Full metadata, identifiable faces — POLICE ONLY
-    processed/           Face-blurred review copies + *_UPLOAD.json metadata
+    processed/           Face-blurred review copies (gitignored) + *_UPLOAD.json (tracked)
     publish/             Metadata-stripped — upload these to YouTube
     export/              Optional zip bundles for 101 handover
   register/
@@ -116,6 +116,9 @@ dangerous-ebikers/
   scripts/
     ingest-incident.sh              Full ingest pipeline
     republish-incident.sh           Re-letterbox + metadata (fix Shorts / wrong aspect)
+    process-import-inbox.sh         One-shot scan of glasses import inbox
+    watch-import-inbox.sh           Poll inbox (used by systemd)
+    install-import-watcher.sh       Enable import watcher service
     regenerate-upload-metadata.sh   Rebuild *_UPLOAD.json from manifest
     upload-incident.sh              Upload *_PUBLISH.mp4 via YouTube API
     youtube-upload.py               Upload implementation
@@ -173,6 +176,39 @@ This will:
 **Upload `*_PUBLISH.mp4` to YouTube as `private`.** After review on YouTube, set **`public`** manually in Studio.  
 **Give police `*_ORIGINAL` + manifest** if you report via 101.
 
+### Glasses import inbox (automatic)
+
+Copy clips from Ray-Ban Meta glasses via LocalSend into:
+
+```
+/home/ajlennon/LocalSend/bike-imports/
+```
+
+New `.MOV` / `.mp4` files are **auto-ingested** (face blur, register, manifest). You still review `*_PROCESSED.mp4` before YouTube upload — nothing is uploaded automatically.
+
+**One-time setup:**
+
+```bash
+./scripts/install-import-watcher.sh
+```
+
+This enables a user systemd service that polls the inbox every 10 seconds. Processed sources move to `bike-imports/done/`; failures go to `bike-imports/failed/`.
+
+**Manual one-shot** (without the watcher):
+
+```bash
+./scripts/process-import-inbox.sh
+```
+
+**Status / logs:**
+
+```bash
+systemctl --user status debike-import-watcher.service
+tail -f register/import-inbox.log
+```
+
+Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` to change inbox path or poll interval.
+
 ### YouTube upload (automated)
 
 **One-time setup** (Google Cloud):
@@ -195,7 +231,7 @@ Create playlist **`2026 Incidents`** in YouTube Studio once (script adds videos 
 ./scripts/upload-incident.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
 ```
 
-Updates `*_UPLOAD.json`, `register/incidents.csv`, and manifest with the YouTube URL. Default quota ~6 uploads/day.
+Updates `*_UPLOAD.json` (top-level `youtube_url` plus `youtube.video_id`, `youtube.url`, `youtube.studio_url`, `youtube.uploaded_utc`), `register/incidents.csv`, and manifest. Default quota ~6 uploads/day.
 
 **Manual alternative:** YouTube Studio → upload `*_PUBLISH.mp4` using text from `*_UPLOAD.json`.
 
@@ -262,7 +298,7 @@ Studio text lives in `channel/` — `description.txt`, `guidelines.txt`, `upload
 
 ## Privacy & UK compliance
 
-Evidence media and the incident register are **gitignored**. Do not commit originals or publish copies.
+Evidence **video files** and the incident register CSV are **gitignored**. `*_UPLOAD.json` files are **committed** — they contain publication metadata only (no video, no faces, repo-relative paths).
 
 **Legal & GDPR approach:** [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) — public operating record (review every six months).
 

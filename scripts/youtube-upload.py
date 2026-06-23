@@ -7,6 +7,7 @@ import csv
 import json
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -121,7 +122,14 @@ def add_to_playlist(youtube, playlist_id: str, video_id: str) -> None:
     ).execute()
 
 
-def update_register(incident_id: str, base_name: str, youtube_url: str) -> None:
+def update_register(
+    incident_id: str,
+    base_name: str,
+    video_id: str,
+    url: str,
+    uploaded_utc: str,
+    privacy_at_upload: str,
+) -> None:
     register = ROOT / "register" / "incidents.csv"
     if register.exists():
         rows = []
@@ -130,7 +138,7 @@ def update_register(incident_id: str, base_name: str, youtube_url: str) -> None:
             fieldnames = reader.fieldnames or []
             for row in reader:
                 if row.get("incident_id") == incident_id:
-                    row["youtube_url"] = youtube_url
+                    row["youtube_url"] = url
                 rows.append(row)
         with register.open("w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -140,8 +148,27 @@ def update_register(incident_id: str, base_name: str, youtube_url: str) -> None:
     manifest = ROOT / "register" / "manifests" / f"{base_name}_MANIFEST.json"
     if manifest.exists():
         data = json.loads(manifest.read_text())
-        data["youtube_url"] = youtube_url
+        data["youtube_url"] = url
+        data["youtube"] = {
+            "video_id": video_id,
+            "url": url,
+            "studio_url": f"https://studio.youtube.com/video/{video_id}/edit",
+            "uploaded_utc": uploaded_utc,
+            "privacy_at_upload": privacy_at_upload,
+        }
         manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def record_upload_in_meta(meta: dict, video_id: str, url: str, uploaded_utc: str, privacy: str) -> dict:
+    """Write YouTube upload result into *_UPLOAD.json (top-level + youtube block)."""
+    meta["youtube_url"] = url
+    yt = meta.setdefault("youtube", {})
+    yt["video_id"] = video_id
+    yt["url"] = url
+    yt["studio_url"] = f"https://studio.youtube.com/video/{video_id}/edit"
+    yt["uploaded_utc"] = uploaded_utc
+    yt["privacy_at_upload"] = privacy
+    return meta
 
 
 def main() -> int:
@@ -224,6 +251,7 @@ def main() -> int:
                 print(f"Uploading… {pct}%")
         video_id = response["id"]
         url = f"https://www.youtube.com/watch?v={video_id}"
+        uploaded_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         print(f"Uploaded : {url}")
 
         playlist_name = yt.get("playlist")
@@ -235,9 +263,16 @@ def main() -> int:
             else:
                 print(f"Playlist not found (create in Studio): {playlist_name}", file=sys.stderr)
 
-        meta["youtube_url"] = url
+        record_upload_in_meta(meta, video_id, url, uploaded_utc, privacy)
         upload_path.write_text(json.dumps(meta, indent=2) + "\n")
-        update_register(meta.get("incident_id", ""), meta.get("base_name", ""), url)
+        update_register(
+            meta.get("incident_id", ""),
+            meta.get("base_name", ""),
+            video_id,
+            url,
+            uploaded_utc,
+            privacy,
+        )
 
         if privacy == "private":
             print("\nReview in YouTube Studio (confirm under Videos, not Shorts), then set PUBLIC.")
