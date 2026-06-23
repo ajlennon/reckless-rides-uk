@@ -28,11 +28,11 @@
     "categoryId": "22",
     "madeForKids": false,
     "playlist": "2026 Incidents",
-    "video_id": "",
-    "url": "",
-    "studio_url": "",
-    "uploaded_utc": "",
-    "privacy_at_upload": ""
+    "video_id": "-XZQyazcuBU",
+    "url": "https://www.youtube.com/watch?v=-XZQyazcuBU",
+    "studio_url": "https://studio.youtube.com/video/-XZQyazcuBU/edit",
+    "uploaded_utc": "2026-06-23T15:40:41Z",
+    "privacy_at_upload": "private"
   },
   "incident": {
     "recorded_utc": "2026-06-23T14:32:59Z",
@@ -44,6 +44,6 @@
     "device": "Ray-Ban Meta Smart Glasses 2"
   },
   "police_ref": "",
-  "youtube_url": "",
+  "youtube_url": "https://www.youtube.com/watch?v=-XZQyazcuBU",
   "notes": "auto-import from glasses inbox"
 }

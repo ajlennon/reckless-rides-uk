@@ -118,6 +118,7 @@ dangerous-ebikers/
     republish-incident.sh           Re-letterbox + metadata (fix Shorts / wrong aspect)
     process-import-inbox.sh         One-shot scan of glasses import inbox
     watch-import-inbox.sh           Poll inbox (used by systemd)
+    upload-pending-incidents.sh      Upload ingested clips missing a YouTube URL
     install-import-watcher.sh       Enable import watcher service
     regenerate-upload-metadata.sh   Rebuild *_UPLOAD.json from manifest
     upload-incident.sh              Upload *_PUBLISH.mp4 via YouTube API
@@ -184,7 +185,9 @@ Copy clips from Ray-Ban Meta glasses via LocalSend into:
 /home/ajlennon/LocalSend/bike-imports/
 ```
 
-New `.MOV` / `.mp4` files are **auto-ingested** (face blur, register, manifest). You still review `*_PROCESSED.mp4` before YouTube upload — nothing is uploaded automatically.
+New `.MOV` / `.mp4` files are **auto-ingested** (face blur, register, manifest). After ingest the source moves to `bike-imports/done/` and **`PUBLISH.mp4` is uploaded to YouTube as private** automatically.
+
+You still review on YouTube Studio and set **public** manually when ready. Nothing uploads as public without `--confirm-public-bypass`.
 
 **One-time setup:**
 
@@ -207,7 +210,13 @@ systemctl --user status debike-import-watcher.service
 tail -f register/import-inbox.log
 ```
 
-Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` to change inbox path or poll interval.
+Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` to change inbox path, poll interval, or set `AUTO_YOUTUBE_UPLOAD=false` to disable YouTube automation.
+
+**Upload backlog manually:**
+
+```bash
+./scripts/upload-pending-incidents.sh
+```
 
 ### YouTube upload (automated)
 

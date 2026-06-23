@@ -18,7 +18,11 @@ source "$CONF"
 IMPORT_INBOX="${IMPORT_INBOX:-/home/ajlennon/LocalSend/bike-imports}"
 
 mkdir -p "$IMPORT_INBOX" "$IMPORT_INBOX/done" "$IMPORT_INBOX/failed" "$UNIT_DIR"
-chmod +x "$ROOT/scripts/process-import-inbox.sh" "$ROOT/scripts/watch-import-inbox.sh"
+chmod +x "$ROOT/scripts/process-import-inbox.sh" "$ROOT/scripts/watch-import-inbox.sh" "$ROOT/scripts/upload-pending-incidents.sh"
+
+if [[ -f "$CONF" ]] && ! grep -q '^AUTO_YOUTUBE_UPLOAD=' "$CONF"; then
+  printf '\n# After ingest, upload to YouTube as private\nAUTO_YOUTUBE_UPLOAD=true\n' >>"$CONF"
+fi
 
 cat >"$SERVICE" <<EOF
 [Unit]
@@ -47,6 +51,7 @@ echo "  Done  : $IMPORT_INBOX/done"
 echo "  Failed: $IMPORT_INBOX/failed"
 echo ""
 echo "Drop .MOV/.mp4 files into the inbox (LocalSend from glasses)."
-echo "Ingest runs automatically; review *_PROCESSED.mp4 before YouTube upload."
+echo "Pipeline: ingest -> done/ -> YouTube upload (private). Set public in Studio after review."
+echo "Disable auto-upload: AUTO_YOUTUBE_UPLOAD=false in config/import-inbox.conf"
 echo ""
 systemctl --user status debike-import-watcher.service --no-pager || true

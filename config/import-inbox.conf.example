@@ -8,3 +8,6 @@ STABLE_INTERVAL=2
 
 # Notes appended to ingest-incident.sh for auto-imported clips
 IMPORT_NOTES="auto-import from glasses inbox"
+
+# After ingest (source moved to bike-imports/done/), upload PUBLISH.mp4 to YouTube as private.
+AUTO_YOUTUBE_UPLOAD=true

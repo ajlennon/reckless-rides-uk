@@ -318,3 +318,4 @@ Ingest complete.
 
 Upload $PUB_FILE as **private** using metadata in $UPLOAD_META_FILE. After manual review, set visibility to **public** in YouTube Studio. Hand ORIGINAL + manifest to police if reported.
 EOF
+echo "__DEB_INGEST_BASE__=$BASE"
