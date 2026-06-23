@@ -1,5 +1,3 @@
-For our approach to UK law, data protection, YouTube terms, and how to raise concerns, see our Compliance & Standards Statement (available on request).
+Compliance & standards (public): https://github.com/ajlennon/dangerous-ebikers/blob/main/COMPLIANCE-STATEMENT.md
 
-Privacy / takedown contact: ajlennon@gmail.com
-
-We welcome constructive feedback to ensure we meet all legal and platform obligations.
+Privacy / takedown / feedback: ajlennon@gmail.com — we welcome constructive input on legal and platform compliance.

@@ -33,7 +33,7 @@ flowchart TD
         C["Assign DEB incident ID<br/>from GPS + timestamp"]
         D["ORIGINAL.mov · evidence/originals/<br/>FULL metadata + faces"]
         E["PROCESSED.mp4 · deface face blur"]
-        F["PUBLISH.mp4 · metadata stripped"]
+        F["PUBLISH.mp4 · 16:9 letterbox<br/>metadata stripped"]
         G["UPLOAD.json · title / description / tags"]
         H["MANIFEST.json + incidents.csv<br/>SHA-256 chain of custody"]
     end
@@ -93,7 +93,7 @@ flowchart TD
 |-------|-------------------------|
 | **ORIGINAL** | Never uploaded; gitignored; identifiable data retained only for police / defence |
 | **PROCESSED** | Face blur (`deface`); human review before any publish decision |
-| **PUBLISH** | No embedded GPS or device metadata; only this file goes to YouTube |
+| **PUBLISH** | No embedded GPS/device metadata; **1920×1080 letterbox**; only this file goes to YouTube |
 | **UPLOAD.json** | Factual text from templates; default **`private`**; set **`public`** in Studio after review |
 | **MANIFEST** | Integrity hashes; documents what was shared with police |
 | **Gates** | See [UK-COMPLIANCE.md §12](UK-COMPLIANCE.md#12-per-incident-checklist) checklist |
@@ -114,8 +114,11 @@ dangerous-ebikers/
     incidents.csv        Master log (gitignored — copy from .example on first run)
     manifests/           Per-incident JSON with SHA-256 hashes
   scripts/
-    ingest-incident.sh              Ingest pipeline
+    ingest-incident.sh              Full ingest pipeline
+    republish-incident.sh           Re-letterbox + metadata (fix Shorts / wrong aspect)
     regenerate-upload-metadata.sh   Rebuild *_UPLOAD.json from manifest
+    upload-incident.sh              Upload *_PUBLISH.mp4 via YouTube API
+    youtube-upload.py               Upload implementation
 ```
 
 ## Filename convention
@@ -146,6 +149,7 @@ DEB-20260623T080303Z_53.4092N_2.9778W_001_MANIFEST.json ← register/manifests/
 
 ```bash
 pip3 install --user deface
+pip3 install --user -r requirements-youtube.txt   # for automated YouTube upload
 # ffmpeg/ffprobe already on system
 ```
 
@@ -161,15 +165,39 @@ This will:
 
 1. Copy the source to `evidence/originals/` with the controlled name
 2. Blur faces (`deface`) → `evidence/processed/`
-3. Strip metadata (`ffmpeg -map_metadata -1`) → `evidence/publish/`
+3. Strip metadata and **letterbox to 16:9** (1920×1080) → `evidence/publish/` — avoids YouTube Shorts classification
 4. Write `evidence/processed/*_UPLOAD.json` (YouTube title, description, tags)
 5. Write `register/manifests/*_MANIFEST.json` (SHA-256 per file)
 6. Append a row to `register/incidents.csv`
 
-**Upload `*_PUBLISH.mp4` to YouTube as `private`.** Use the paired `*_UPLOAD.json` for title, description, and tags. **After you have reviewed the clip on YouTube, set visibility to `public` manually** in YouTube Studio.  
+**Upload `*_PUBLISH.mp4` to YouTube as `private`.** After review on YouTube, set **`public`** manually in Studio.  
 **Give police `*_ORIGINAL` + manifest** if you report via 101.
 
-Set **YouTube Studio → Settings → Upload defaults → Visibility → Private** so manual uploads match the pipeline default.
+### YouTube upload (automated)
+
+**One-time setup** (Google Cloud):
+
+1. [Google Cloud Console](https://console.cloud.google.com/) → create project → enable **YouTube Data API v3**
+2. **OAuth consent screen** → External → add scopes `youtube.upload` and `youtube` → add your Google account as **test user**
+3. **Credentials** → Create **OAuth client ID** → **Desktop app** → download JSON
+4. Save as `config/client_secret.json` (see `config/client_secret.json.example`)
+5. First upload opens a browser to authorise; token saved to `config/youtube-token.json` (gitignored)
+
+Create playlist **`2026 Incidents`** in YouTube Studio once (script adds videos to it by name).
+
+**After ingest + review of `*_PROCESSED.mp4`:**
+
+```bash
+# Dry run
+./scripts/upload-incident.sh DEB-20260623T080303Z_53.4092N_2.9778W_001 --dry-run
+
+# Upload private (default)
+./scripts/upload-incident.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
+```
+
+Updates `*_UPLOAD.json`, `register/incidents.csv`, and manifest with the YouTube URL. Default quota ~6 uploads/day.
+
+**Manual alternative:** YouTube Studio → upload `*_PUBLISH.mp4` using text from `*_UPLOAD.json`.
 
 Regenerate upload metadata after editing channel templates:
 
@@ -177,7 +205,37 @@ Regenerate upload metadata after editing channel templates:
 ./scripts/regenerate-upload-metadata.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
 ```
 
-After upload, edit `incidents.csv` and the manifest JSON to add `police_ref` and `youtube_url`.
+### Fix Shorts / wrong aspect ratio
+
+Portrait clips from the glasses may be classified as **YouTube Shorts** (limited description visibility). The ingest pipeline letterboxes to **1920×1080**. If you uploaded before that fix:
+
+1. Delete the Short in YouTube Studio (or leave private and ignore)
+2. Rebuild publish copy and metadata:
+
+```bash
+./scripts/republish-incident.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
+./scripts/upload-incident.sh DEB-20260623T080303Z_53.4092N_2.9778W_001
+```
+
+3. Confirm the new upload appears under **Content → Videos**, not **Shorts**
+
+After upload, add `police_ref` to `incidents.csv` and the manifest when reported via 101.
+
+## YouTube & legal compliance (summary)
+
+This project is designed to stay within **UK GDPR** and **YouTube Community Guidelines**. Key controls:
+
+| Area | What we do |
+|------|------------|
+| **GDPR** | Legitimate interests + minimisation; face blur; private-first upload; takedown process |
+| **Harassment** | No naming, no vigilante language, no repeated targeting of one rider |
+| **Privacy** | Originals never published; metadata stripped; contact on every video |
+| **YouTube CGT** | Factual titles; moderate comments; engage with platform notices |
+| **Shorts risk** | 16:9 letterbox so descriptions and compliance footer are searchable |
+
+Full detail: [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) (external) and [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) (operating record).
+
+**Before scaling:** complete ICO registration self-assessment and sign Appendix A LIA in `UK-COMPLIANCE.md`.
 
 ## Police handover
 
@@ -206,6 +264,6 @@ Studio text lives in `channel/` — `description.txt`, `guidelines.txt`, `upload
 
 Evidence media and the incident register are **gitignored**. Do not commit originals or publish copies.
 
-**Legal & GDPR approach:** see [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) — internal living document (review every six months).
+**Legal & GDPR approach:** [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) — public operating record (review every six months).
 
 **External statement** (complainants, YouTube, police): [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) — share as PDF, link, or paste into correspondence to demonstrate standards and openness to feedback.

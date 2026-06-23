@@ -11,4 +11,9 @@ evidence/export/*
 # Incident register may contain GPS, police refs, YouTube URLs
 register/incidents.csv
 register/manifests/*.json
+register/takedowns.csv
 !register/manifests/.gitkeep
+
+# YouTube OAuth secrets (never commit)
+config/client_secret.json
+config/youtube-token.json

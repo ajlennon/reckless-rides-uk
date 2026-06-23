@@ -26,9 +26,14 @@ default_tags = [t.strip() for t in read_channel("upload-tags.txt").split(",") if
 footer = read_channel("video-description-footer.txt")
 
 loc = manifest["location"]
-lat, lon = loc.get("latitude", ""), loc.get("longitude", "")
+lat = loc.get("latitude", "")
+lon = loc.get("longitude", "")
 lat_tag = loc.get("label", "").split("_")[0] if loc.get("label") else ""
 lon_tag = loc.get("label", "").split("_")[1] if loc.get("label") and "_" in loc["label"] else ""
+# Legacy manifests stored west longitude as positive — fix map query
+lon_map = lon
+if lat and lon and lon_tag.endswith("W") and not str(lon).startswith("-"):
+    lon_map = f"-{lon}"
 utc_recorded = manifest["recorded_utc"]
 bst_recorded = manifest.get("recorded_bst", "")
 if not bst_recorded and utc_recorded:
@@ -45,7 +50,14 @@ pub_path = manifest["files"]["publish"]["path"]
 proc_path = manifest["files"]["processed"]["path"]
 device = manifest.get("source_device", {}).get("model", "")
 
-map_url = f"https://www.google.com/maps?q={lat},{lon}" if lat and lon else ""
+def rel_path(p):
+    p = Path(p).resolve()
+    try:
+        return str(p.relative_to(root.resolve()))
+    except ValueError:
+        return str(p)
+
+map_url = f"https://www.google.com/maps?q={lat},{lon_map}" if lat and lon_map else ""
 title = f"Pavement e-bike — {bst_recorded}" if bst_recorded else f"Pavement e-bike — {utc_recorded}"
 
 description_parts = [
@@ -54,8 +66,11 @@ description_parts = [
     f"Recorded: {utc_recorded}" + (f" ({bst_recorded})" if bst_recorded else ""),
 ]
 if lat and lon:
-    hem = "W" if lon_tag.endswith("W") else "E"
-    description_parts += [f"GPS: {lat}°N, {lon}°{hem}", f"Map: {map_url}"]
+    lat_disp = lat_tag[:-1] if lat_tag else lat
+    lon_disp = lon_tag[:-1] if lon_tag else str(abs(float(lon)))
+    hem_lat = lat_tag[-1] if lat_tag else "N"
+    hem_lon = lon_tag[-1] if lon_tag else "W"
+    description_parts += [f"GPS: {lat_disp}°{hem_lat}, {lon_disp}°{hem_lon}", f"Map: {map_url}"]
 if device:
     description_parts.append(f"Device: {device}")
 if notes:
@@ -66,7 +81,7 @@ upload = {
     "schema": "dangerous-ebikers-youtube-upload/v1",
     "incident_id": manifest["incident_id"],
     "base_name": base,
-    "files": {"upload_video": pub_path, "processed_video": proc_path},
+    "files": {"upload_video": rel_path(pub_path), "processed_video": rel_path(proc_path)},
     "youtube": {
         "title": title,
         "description": "\n".join(description_parts),
@@ -81,7 +96,7 @@ upload = {
         "recorded_utc": utc_recorded,
         "recorded_bst": bst_recorded,
         "latitude": lat,
-        "longitude": lon,
+        "longitude": lon_map if lat and lon else lon,
         "location_label": loc.get("label", ""),
         "map_url": map_url,
         "device": device,

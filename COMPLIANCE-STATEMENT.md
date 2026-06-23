@@ -4,7 +4,7 @@
 
 **Channel:** [@Dangerous-eBikers](https://www.youtube.com/@Dangerous-eBikers)  
 **Public document:** [github.com/ajlennon/dangerous-ebikers/blob/main/COMPLIANCE-STATEMENT.md](https://github.com/ajlennon/dangerous-ebikers/blob/main/COMPLIANCE-STATEMENT.md)  
-**Version:** 1.0  
+**Version:** 1.1  
 **Last updated:** 23 June 2026  
 **Jurisdiction:** England & Wales, United Kingdom
 
@@ -35,7 +35,7 @@ We have reviewed how UK law and regulation may apply to recording in public plac
 
 **Important:** This statement describes our **intended standards and controls**. It is **not legal advice** and does not claim that every publication is lawful in every circumstance—that depends on the facts of each clip. We are committed to correcting mistakes promptly when they are drawn to our attention.
 
-Detailed internal procedures are maintained in our project compliance documentation and reviewed at least every six months.
+Detailed operating procedures: [UK compliance record](UK-COMPLIANCE.md) and [publication workflow](README.md#publication-workflow-privacy--compliance) in our public GitHub repository. Reviewed at least every six months.
 
 ---
 
@@ -51,8 +51,11 @@ We operate on YouTube as [@Dangerous-eBikers](https://www.youtube.com/@Dangerous
 
 - No incitement to harassment or vigilantism  
 - No publishing with the primary purpose of identifying private individuals for mob justice  
-- Factual titles and descriptions; privacy notice on the channel  
-- Moderation of comments where platform tools allow  
+- Factual titles and descriptions (observable conduct — e.g. “ridden on the pavement”)  
+- Privacy notice on the channel; per-video privacy footer with contact email  
+- Upload **private**, review, then set **public** manually — never skip the review gate  
+- Clips published as standard **Videos** (16:9 letterbox), not Shorts, for searchable descriptions  
+- Moderation of comments; removal of abuse, doxxing, and “identify this person” requests  
 
 If YouTube or another platform believes content breaches its terms, we will **engage constructively** and **act promptly** on valid notices and rulings.
 
@@ -66,9 +69,9 @@ Before any clip is made **publicly visible**, we apply a controlled pipeline des
 |-------|----------------|
 | **Original recording** | Retained **privately** with device metadata (time, location). **Not uploaded** to YouTube or public repositories. |
 | **Face anonymisation** | Automated face blurring on a working copy; **manual review** before any upload decision. |
-| **Publish copy** | Embedded GPS/device metadata **removed** from the file uploaded to the platform. |
+| **Publish copy** | Embedded GPS/device metadata **removed**; **letterboxed to 1920×1080** so clips appear as standard Videos (not Shorts). |
 | **Upload visibility** | Clips are uploaded as **Private**, reviewed again on the platform, and only then set to **Public** manually. |
-| **Description** | Factual incident log text; privacy footer stating anonymisation and takedown contact route. |
+| **Description** | Factual incident log text; privacy footer with **ajlennon@gmail.com** and link to this statement. |
 | **Evidence integrity** | Original files and integrity records retained for possible handover to police under proper process. |
 
 We do **not** commit video evidence files to public source-control repositories.
@@ -148,7 +151,7 @@ Please include: URL of the video (if any), date/time/location if known, and the 
 
 | Item | Detail |
 |------|--------|
-| **Internal compliance record** | Maintained separately; reviewed ≥ every 6 months |
+| **Internal compliance record** | [UK-COMPLIANCE.md](UK-COMPLIANCE.md) — reviewed ≥ every 6 months |
 | **Operational workflow** | Documented with ingest, review gates, and publication controls |
 | **This statement** | Intended for external sharing with complainants, platforms, and police |
 

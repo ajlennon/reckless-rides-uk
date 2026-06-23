@@ -57,9 +57,9 @@ if m:
     lat_val = float(m.group(1))
     lon_val = -float(m.group(2))  # Meta ISO6709: hyphen separates west longitude
     lat = f"{lat_val:.4f}"
-    lon = f"{abs(lon_val):.4f}"
-    lat_tag = f"{lat}N"
-    lon_tag = f"{lon}W" if lon_val < 0 else f"{lon}E"
+    lon = f"{lon_val:.4f}"
+    lat_tag = f"{abs(lat_val):.4f}N" if lat_val >= 0 else f"{abs(lat_val):.4f}S"
+    lon_tag = f"{abs(lon_val):.4f}W" if lon_val < 0 else f"{abs(lon_val):.4f}E"
 else:
     lat_tag = lon_tag = "UNKNOWN"
 bst = ""
@@ -132,8 +132,13 @@ INGESTED_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "Blurring faces -> processed/"
 "$DEFACE" "$ORIG_PATH" --replacewith blur --mask-scale 1.3 --keep-audio -o "$PROC_PATH"
 
-echo "Stripping metadata -> publish/"
-"$FFMPEG" -y -loglevel error -i "$PROC_PATH" -c copy -map_metadata -1 "$PUB_PATH"
+echo "Letterbox 16:9 + strip metadata -> publish/"
+"$FFMPEG" -y -loglevel error -i "$PROC_PATH" \
+  -vf "scale=-2:1080,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black" \
+  -c:v libx264 -preset medium -crf 23 \
+  -c:a copy \
+  -map_metadata -1 \
+  "$PUB_PATH"
 
 SHA256_PROC="$(sha256sum "$PROC_PATH" | awk '{print $1}')"
 SHA256_PUB="$(sha256sum "$PUB_PATH" | awk '{print $1}')"
@@ -152,6 +157,11 @@ meta = json.loads(os.environ["META_JSON"])
     sha_orig, sha_proc, sha_pub, ingested_utc,
 ) = sys.argv[1:]
 
+lon_map = lon
+if lat and lon and lon_tag.endswith("W") and not str(lon).startswith("-"):
+    lon_map = f"-{lon.lstrip('-')}"
+map_url = f"https://www.google.com/maps?q={lat},{lon_map}" if lat and lon_map else ""
+
 manifest = {
     "schema": "dangerous-ebikers-evidence/v1",
     "incident_id": incident_id,
@@ -160,8 +170,9 @@ manifest = {
     "recorded_bst": bst_recorded,
     "location": {
         "latitude": lat,
-        "longitude": lon,
+        "longitude": lon_map if lon_map else lon,
         "label": f"{lat_tag}_{lon_tag}",
+        "map_url": map_url,
     },
     "source_device": {
         "model": meta.get("device", ""),
@@ -176,6 +187,7 @@ manifest = {
     "processing": {
         "ingested_utc": ingested_utc,
         "face_blur": "deface --replacewith blur --mask-scale 1.3",
+        "letterbox_16x9": "ffmpeg scale/pad 1920x1080",
         "metadata_stripped_on_publish": True,
     },
     "police_ref": "",
@@ -208,7 +220,17 @@ def read_channel(name: str) -> str:
 default_tags = [t.strip() for t in read_channel("upload-tags.txt").split(",") if t.strip()]
 footer = read_channel("video-description-footer.txt")
 
-map_url = f"https://www.google.com/maps?q={lat},{lon}" if lat and lon else ""
+map_url = ""
+if lat and lon:
+    lon_map = lon if str(lon).startswith("-") or not lon_tag.endswith("W") else f"-{lon.lstrip('-')}"
+    map_url = f"https://www.google.com/maps?q={lat},{lon_map}"
+
+def rel_path(p):
+    p = Path(p).resolve()
+    try:
+        return str(p.relative_to(root.resolve()))
+    except ValueError:
+        return str(p)
 bst_short = bst_recorded or utc_recorded
 title = f"Pavement e-bike — {bst_short}" if bst_recorded else f"Pavement e-bike — {utc_recorded}"
 
@@ -218,9 +240,12 @@ description_parts = [
     f"Recorded: {utc_recorded}" + (f" ({bst_recorded})" if bst_recorded else ""),
 ]
 if lat and lon:
-    hem = "W" if lon_tag.endswith("W") else "E"
+    lat_disp = lat_tag[:-1] if lat_tag else lat
+    lon_disp = lon_tag[:-1] if lon_tag else str(abs(float(lon)))
+    hem_lat = lat_tag[-1] if lat_tag else "N"
+    hem_lon = lon_tag[-1] if lon_tag else ("W" if float(lon) < 0 else "E")
     description_parts += [
-        f"GPS: {lat}°N, {lon}°{hem}",
+        f"GPS: {lat_disp}°{hem_lat}, {lon_disp}°{hem_lon}",
         f"Map: {map_url}",
     ]
 if meta.get("device"):
@@ -240,8 +265,8 @@ upload = {
     "incident_id": incident_id,
     "base_name": base_name,
     "files": {
-        "upload_video": pub_path,
-        "processed_video": proc_path,
+        "upload_video": rel_path(pub_path),
+        "processed_video": rel_path(proc_path),
     },
     "youtube": {
         "title": title,
@@ -257,7 +282,7 @@ upload = {
         "recorded_utc": utc_recorded,
         "recorded_bst": bst_recorded,
         "latitude": lat,
-        "longitude": lon,
+        "longitude": lon_map if lon_map else lon,
         "location_label": f"{lat_tag}_{lon_tag}",
         "map_url": map_url,
         "device": meta.get("device", ""),

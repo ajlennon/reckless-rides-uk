@@ -148,7 +148,7 @@ flowchart LR
 |---------|----------------|
 | **Originals never published** | `evidence/originals/*_ORIGINAL.*` |
 | **Face anonymisation** | `deface --replacewith blur --mask-scale 1.3` — manual review each clip |
-| **Metadata stripped on publish** | `ffmpeg -map_metadata -1` on `*_PUBLISH.mp4` |
+| **Metadata stripped + 16:9 letterbox** | `ffmpeg` scale/pad to **1920×1080** on `*_PUBLISH.mp4` — standard **Videos**, not Shorts |
 | **Controlled evidence chain** | `DEB-{UTC}_{LAT}_{LON}_{NNN}_*` naming + manifest SHA-256 |
 | **Default private** | `*_UPLOAD.json` → `"privacy": "private"`; set **public** in YouTube Studio after review |
 | **No vigilante language** | Channel guidelines; factual titles only |
@@ -160,7 +160,24 @@ flowchart LR
 | Face blur misses faces / reflections | Watch full clip before upload; use `--replacewith solid` for children; do not publish if anonymisation fails |
 | Audio may identify voices | Consider muting publish copy if voices are clear and not relevant |
 | Number plates | Not auto-blurred — blur manually or exclude frames if a plate could identify a **private** individual unrelated to the incident |
-| GPS in YouTube description | Location of **incident**, not home address — use street-level only; remove if disproportionate |
+| GPS in YouTube description | Street-level incident location only — signed map URLs (`lon` negative for west); not home addresses |
+| YouTube Shorts classification | Portrait/short clips become Shorts — **letterbox to 16:9** before upload; confirm under **Videos** in Studio |
+
+### YouTube platform policy (ban / strike risk)
+
+We reduce the risk of Community Guidelines strikes or channel termination by:
+
+| Risk | Control |
+|------|---------|
+| **Harassment / cyberbullying** | No naming individuals; face blur; no “find this person” commentary; moderate/remove abusive comments |
+| **Privacy violations** | Anonymisation pipeline; private-until-reviewed; takedown within 7 days |
+| **Vigilante / incitement** | Channel guidelines prohibit confrontation; factual titles (“pavement e-bike”, time, place) |
+| **Repeated targeting** | Do not build series focused on one identifiable rider |
+| **Misleading content** | No deceptive edits; originals retained for integrity |
+| **Children** | Withhold if anonymisation uncertain |
+| **Bypassing review** | Upload script refuses `--public` without explicit `--confirm-public-bypass` |
+
+If YouTube issues a warning or removes a video, **stop publishing** disputed clips, respond via Studio appeals, and update this document.
 
 ---
 
@@ -267,8 +284,9 @@ Before upload:
 - [ ] Watched full `*_PROCESSED.mp4` — faces blurred; children not identifiable  
 - [ ] `*_PUBLISH.mp4` has no GPS/device metadata (`ffprobe` check)  
 - [ ] Title/description from `*_UPLOAD.json` — factual, no names, no plate numbers  
+- [ ] `*_PUBLISH.mp4` is **1920×1080** (not Shorts format)  
 - [ ] Upload **`private`** using `*_UPLOAD.json` metadata  
-- [ ] Review clip on YouTube while still **private**  
+- [ ] Review clip on YouTube while still **private** — confirm it appears under **Videos**, not **Shorts**  
 - [ ] Set **public** in YouTube Studio only after review passes (re-run LIA if you change mind about public visibility)  
 - [ ] Privacy footer present in description  
 - [ ] Incident row in `register/incidents.csv`  
@@ -300,6 +318,9 @@ After upload:
 | [`channel/guidelines.txt`](channel/guidelines.txt) | Channel rules |
 | [`register/incidents.csv`](register/incidents.csv) | Processing record |
 | [`register/manifests/*_MANIFEST.json`](register/manifests/) | Integrity & file map |
+| [`scripts/upload-incident.sh`](scripts/upload-incident.sh) | YouTube API upload (private default) |
+| [`scripts/republish-incident.sh`](scripts/republish-incident.sh) | Re-letterbox + fix metadata after Shorts mistake |
+| [`register/takedowns.csv.example`](register/takedowns.csv.example) | Complaint log template |
 
 ---
 
@@ -330,7 +351,7 @@ Is publication necessary? Could the purpose be achieved without identifiable dat
 |----------------|--------|------------|
 | Rider | May feel observed | Faces blurred on publish; no naming; report to police not mob justice |
 | Bystanders | Incidental capture | Face blur; short clips; takedown policy |
-| General public | Low | Unlisted default |
+| General public | Low | Private on upload; public only after manual Studio review |
 
 ### A4 Reasonable expectations
 
@@ -354,6 +375,7 @@ High vulnerability — solid-box blur or withhold publication if any doubt.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-06-23 | Comprehensive review: 16:9 letterbox, map URL fix, YouTube policy section, upload automation, takedown template | — |
 | 2026-06-23 | Added external COMPLIANCE-STATEMENT.md for complainants, platforms, police | — |
 
 ---
