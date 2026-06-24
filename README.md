@@ -125,6 +125,7 @@ flowchart TD
 
 ```
 reckless-rides-uk/
+  core/                  evidence-core git submodule (metadata probe, manifest, geojson)
   branding/              Channel art and watermark (YouTube-sized PNGs)
   channel/               Copy-paste text for YouTube Studio + upload templates
   config/                import-inbox.conf, OAuth secrets (gitignored; see .example)
@@ -155,6 +156,30 @@ reckless-rides-uk/
     pre-commit-check.sh             Run all hooks manually
   .pre-commit-config.yaml           Hooks: map build, JSON, shell, YAML, path checks
 ```
+
+## evidence-core integration
+
+Metadata probing, chain-of-custody manifests, and the public incident map are built on the shared **[evidence-core](https://github.com/DynamicDevices/evidence-core)** library (git submodule at `core/`).
+
+| Script | Uses core for |
+|--------|----------------|
+| `ingest-incident.sh` | Probe source MOV (GPS, time, device); write manifest |
+| `build-map-data.py` | `*_UPLOAD.json` → `docs/data/incidents.geojson` |
+
+**Existing clone** — initialise the submodule after pull:
+
+```bash
+git submodule update --init --recursive
+pip install -e "./core[dev]"
+```
+
+**Probe any file** (glasses clip, test phone media):
+
+```bash
+probe-media /path/to/video.MOV
+```
+
+Other products (e.g. private VAWG lab) use the same core with different prefixes and no public map. See [evidence-core README](https://github.com/DynamicDevices/evidence-core#product-integration).
 
 ## Filename convention
 
@@ -330,7 +355,9 @@ Full detail: [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) (external) and
 
 Public map of uploaded incidents: **https://recklessrides.uk/** (canonical) · also **https://dynamicdevices.github.io/reckless-rides-uk/**
 
-Built from `*_UPLOAD.json` (YouTube URL required). Pins show incident metadata and **link to YouTube** — no video embedded on the map site. On each push to `main`, GitHub Actions runs `scripts/build-map-data.py` and deploys `docs/`.
+Built from `*_UPLOAD.json` (YouTube URL required). Pins show incident metadata and **link to YouTube** — no video embedded on the map site.
+
+On each push to `main`, GitHub Actions checks out **`core/` recursively**, runs `scripts/build-map-data.py`, and deploys `docs/`. If Pages CI fails with `No module named 'evidence_core'`, run `git submodule update --init --recursive` locally and ensure `.github/workflows/pages.yml` uses `submodules: recursive`.
 
 **First-time setup:** repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
@@ -440,3 +467,13 @@ Evidence **video files** and the incident register CSV are **gitignored**. `*_UP
 **Legal & GDPR approach:** [`UK-COMPLIANCE.md`](UK-COMPLIANCE.md) — public operating record (review every six months).
 
 **External statement** (complainants, YouTube, police): [`COMPLIANCE-STATEMENT.md`](COMPLIANCE-STATEMENT.md) — share as PDF, link, or paste into correspondence to demonstrate standards and openness to feedback.
+
+## Releases
+
+Tagged releases document stable ingest/map tooling. Current: **v1.1.0** — evidence-core submodule integration ([releases](https://github.com/DynamicDevices/reckless-rides-uk/releases)).
+
+After checkout of a release tag:
+
+```bash
+git submodule update --init --recursive
+```
