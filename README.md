@@ -10,6 +10,7 @@ Nationwide UK evidence project — public documentation, compliance standards, a
 | **ICO registration** | Data protection fee paid (Tier 1 micro; application **C1966226**; public **Z** reference pending) |
 | **Site** | [recklessrides.uk](https://recklessrides.uk) (incident map) |
 | **Repo** | [github.com/DynamicDevices/reckless-rides-uk](https://github.com/DynamicDevices/reckless-rides-uk) |
+| **Shared core** | [evidence-core](https://github.com/DynamicDevices/evidence-core) (git submodule at `core/`) |
 | **Compliance** | [COMPLIANCE-STATEMENT.md](COMPLIANCE-STATEMENT.md) |
 | **Privacy / takedown** | [ajlennon@dynamicdevices.co.uk](mailto:ajlennon@dynamicdevices.co.uk) |
 
@@ -182,8 +183,11 @@ DEB-20260623T080303Z_53.4092N_2.9778W_001_MANIFEST.json ← register/manifests/
 ## Prerequisites
 
 ```bash
+git clone --recurse-submodules git@github.com:DynamicDevices/reckless-rides-uk.git
+cd reckless-rides-uk
 pip3 install --user deface
 pip3 install --user -r requirements-youtube.txt   # for automated YouTube upload
+pip3 install -e "./core[dev]"                     # optional: probe-media CLI
 # ffmpeg/ffprobe already on system
 ```
 

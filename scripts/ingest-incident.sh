@@ -3,6 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CORE="${CORE:-$ROOT/core}"
+export PYTHONPATH="${CORE}${PYTHONPATH:+:$PYTHONPATH}"
 SRC="${1:?Usage: ingest-incident.sh /path/to/source.MOV [notes...]}"
 
 NOTES="${*:2}"
@@ -29,53 +31,12 @@ if [[ ! -f "$REGISTER" ]]; then
 fi
 
 META_JSON="$(FFPROBE="$FFPROBE" python3 - "$SRC" <<'PY'
-import json, os, subprocess, sys
-from datetime import datetime, timezone
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    ZoneInfo = None
+import json, os, sys
+from evidence_core.probe import probe_file
 
 src = sys.argv[1]
-ffprobe = os.environ["FFPROBE"]
-out = subprocess.check_output(
-    [ffprobe, "-v", "quiet", "-show_entries", "format_tags", "-of", "json", src],
-    text=True,
-)
-tags = json.loads(out).get("format", {}).get("tags", {})
-utc_raw = tags.get("com.apple.quicktime.creationdate") or tags.get("creation_time") or ""
-utc_raw = utc_raw.rstrip("Z")
-if utc_raw.endswith(".000000"):
-    utc_raw = utc_raw[:-7]
-dt_utc = datetime.strptime(utc_raw, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
-iso6709 = tags.get("com.apple.quicktime.location.ISO6709", "")
-lat = lon = lat_tag = lon_tag = ""
-import re
-m = re.match(r"\+([0-9.]+)-([0-9.]+)/?", iso6709)
-if m:
-    lat_val = float(m.group(1))
-    lon_val = -float(m.group(2))  # Meta ISO6709: hyphen separates west longitude
-    lat = f"{lat_val:.4f}"
-    lon = f"{lon_val:.4f}"
-    lat_tag = f"{abs(lat_val):.4f}N" if lat_val >= 0 else f"{abs(lat_val):.4f}S"
-    lon_tag = f"{abs(lon_val):.4f}W" if lon_val < 0 else f"{abs(lon_val):.4f}E"
-else:
-    lat_tag = lon_tag = "UNKNOWN"
-bst = ""
-if ZoneInfo:
-    bst = dt_utc.astimezone(ZoneInfo("Europe/London")).strftime("%Y-%m-%d %H:%M:%S %Z")
-print(json.dumps({
-    "utc_recorded": dt_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "utc_stamp": dt_utc.strftime("%Y%m%dT%H%M%SZ"),
-    "bst_recorded": bst,
-    "latitude": lat,
-    "longitude": lon,
-    "lat_tag": lat_tag,
-    "lon_tag": lon_tag,
-    "device": tags.get("com.apple.quicktime.model", ""),
-    "device_comment": tags.get("com.apple.quicktime.comment", ""),
-}))
+result = probe_file(src, ffprobe=os.environ.get("FFPROBE", "ffprobe"))
+print(json.dumps(result.to_legacy_meta()))
 PY
 )"
 
@@ -148,6 +109,7 @@ META_JSON="$META_JSON" NOTES="$NOTES" UPLOAD_META_PATH="$UPLOAD_META_PATH" pytho
   "$ORIG_PATH" "$PROC_PATH" "$PUB_PATH" \
   "$SHA256_ORIG" "$SHA256_PROC" "$SHA256_PUB" "$INGESTED_UTC" <<'PY'
 import json, os, sys
+from evidence_core.manifest import rides_legacy_manifest
 
 meta = json.loads(os.environ["META_JSON"])
 (
@@ -157,43 +119,27 @@ meta = json.loads(os.environ["META_JSON"])
     sha_orig, sha_proc, sha_pub, ingested_utc,
 ) = sys.argv[1:]
 
-lon_map = lon
-if lat and lon and lon_tag.endswith("W") and not str(lon).startswith("-"):
-    lon_map = f"-{lon.lstrip('-')}"
-map_url = f"https://www.google.com/maps?q={lat},{lon_map}" if lat and lon_map else ""
-
-manifest = {
-    "schema": "dangerous-ebikers-evidence/v1",
-    "incident_id": incident_id,
-    "base_name": base_name,
-    "recorded_utc": utc_recorded,
-    "recorded_bst": bst_recorded,
-    "location": {
-        "latitude": lat,
-        "longitude": lon_map if lon_map else lon,
-        "label": f"{lat_tag}_{lon_tag}",
-        "map_url": map_url,
-    },
-    "source_device": {
-        "model": meta.get("device", ""),
-        "comment": meta.get("device_comment", ""),
-    },
-    "files": {
-        "original": {"path": orig_path, "sha256": sha_orig, "role": "POLICE_EVIDENCE"},
-        "processed": {"path": proc_path, "sha256": sha_proc, "role": "INTERNAL_REVIEW"},
-        "publish": {"path": pub_path, "sha256": sha_pub, "role": "YOUTUBE_UPLOAD"},
-        "upload_metadata": {"path": os.environ.get("UPLOAD_META_PATH", ""), "role": "YOUTUBE_METADATA"},
-    },
-    "processing": {
-        "ingested_utc": ingested_utc,
-        "face_blur": "deface --replacewith blur --mask-scale 1.3",
-        "letterbox_16x9": "ffmpeg scale/pad 1920x1080",
-        "metadata_stripped_on_publish": True,
-    },
-    "police_ref": "",
-    "youtube_url": "",
-    "notes": os.environ.get("NOTES", ""),
-}
+manifest = rides_legacy_manifest(
+    incident_id=incident_id,
+    base_name=base_name,
+    recorded_utc=utc_recorded,
+    recorded_bst=bst_recorded,
+    latitude=lat,
+    longitude=lon,
+    lat_tag=lat_tag,
+    lon_tag=lon_tag,
+    device_model=meta.get("device", ""),
+    device_comment=meta.get("device_comment", ""),
+    orig_path=orig_path,
+    proc_path=proc_path,
+    pub_path=pub_path,
+    upload_meta_path=os.environ.get("UPLOAD_META_PATH", ""),
+    sha_orig=sha_orig,
+    sha_proc=sha_proc,
+    sha_pub=sha_pub,
+    ingested_utc=ingested_utc,
+    notes=os.environ.get("NOTES", ""),
+)
 with open(manifest_path, "w") as f:
     json.dump(manifest, f, indent=2)
     f.write("\n")
