@@ -179,7 +179,7 @@ pip install -e "./core[dev]"
 probe-media /path/to/video.MOV
 ```
 
-Other products (e.g. private VAWG lab) use the same core with different prefixes and no public map. See [evidence-core README](https://github.com/DynamicDevices/evidence-core#product-integration).
+Other products (e.g. private [personal-safety-pwa](https://github.com/DynamicDevices/personal-safety-pwa)) use the same core with different prefixes and no public map. See [evidence-core README](https://github.com/DynamicDevices/evidence-core#product-integration).
 
 ## Filename convention
 
