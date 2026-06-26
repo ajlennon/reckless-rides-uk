@@ -12,7 +12,7 @@ if [[ -f "$CONF" ]]; then
 fi
 
 AUTO_YOUTUBE_UPLOAD="${AUTO_YOUTUBE_UPLOAD:-true}"
-AUTO_PUBLISH_MAP="${AUTO_PUBLISH_MAP:-true}"
+AUTO_PUBLISH_MAP="${AUTO_PUBLISH_MAP:-false}"
 UPLOAD="$ROOT/scripts/upload-incident.sh"
 PUBLISH_MAP="$ROOT/scripts/publish-map-metadata.sh"
 
@@ -81,9 +81,13 @@ main() {
 
   [[ "$uploaded" -gt 0 ]] && log "youtube pending complete: $uploaded uploaded"
 
-  if [[ "$uploaded" -gt 0 && "$AUTO_PUBLISH_MAP" =~ ^(true|1|yes)$ ]]; then
-    chmod +x "$PUBLISH_MAP"
-    "$PUBLISH_MAP" "Add ${uploaded} incident(s) to public map after YouTube upload." || true
+  if [[ "$uploaded" -gt 0 ]]; then
+    if [[ "$AUTO_PUBLISH_MAP" =~ ^(true|1|yes)$ ]]; then
+      chmod +x "$PUBLISH_MAP"
+      "$PUBLISH_MAP" "Add ${uploaded} incident(s) to public map after YouTube upload." || true
+    else
+      log "map publish deferred — set PUBLIC in Studio, then: ./scripts/publish-map-metadata.sh"
+    fi
   fi
 
   return 0

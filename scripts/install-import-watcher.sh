@@ -33,13 +33,18 @@ fi
 rm -f "$LEGACY_SERVICE"
 
 YOUTUBE_PYTHON=""
-for py in "${HOME}/anaconda3/bin/python3" "$(command -v python3.10 2>/dev/null || true)"; do
+for py in "$(command -v python3.10 2>/dev/null || true)" "$(command -v python3 2>/dev/null || true)"; do
   [[ -n "$py" && -x "$py" ]] || continue
   if "$py" -c "import google.auth" 2>/dev/null; then
     YOUTUBE_PYTHON="$py"
     break
   fi
 done
+
+if [[ -z "$YOUTUBE_PYTHON" ]]; then
+  echo "WARNING: No Python with google-auth found. Install:" >&2
+  echo "  python3.10 -m pip install --user -r requirements-youtube.txt" >&2
+fi
 
 cat >"$SERVICE" <<EOF
 [Unit]
@@ -50,7 +55,7 @@ After=default.target
 Type=simple
 WorkingDirectory=$ROOT
 Environment=RRUK_IMPORT_CONF=$CONF
-Environment=PATH=${HOME}/anaconda3/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PATH=${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin
 ${YOUTUBE_PYTHON:+Environment=YOUTUBE_PYTHON=$YOUTUBE_PYTHON}
 ExecStart=$ROOT/scripts/watch-import-inbox.sh
 Restart=on-failure
@@ -71,6 +76,7 @@ echo "  Done  : $IMPORT_INBOX/done"
 echo "  Failed: $IMPORT_INBOX/failed"
 echo ""
 echo "Drop .MOV/.mp4 files into the inbox (LocalSend from glasses)."
-echo "Pipeline: ingest -> done/ -> YouTube upload (private). Set public in Studio after review."
+echo "Pipeline: ingest -> done/ -> YouTube upload (private)."
+echo "After Studio review (set PUBLIC): ./scripts/publish-map-metadata.sh"
 echo "Disable auto-upload: AUTO_YOUTUBE_UPLOAD=false in config/import-inbox.conf"
 systemctl --user status "$SERVICE_NAME" --no-pager || true

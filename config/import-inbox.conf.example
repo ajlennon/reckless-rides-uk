@@ -12,5 +12,5 @@ IMPORT_NOTES="auto-import from glasses inbox"
 # After ingest (source moved to rides-imports/done/), upload PUBLISH.mp4 to YouTube as private.
 AUTO_YOUTUBE_UPLOAD=true
 
-# Commit *_UPLOAD.json + map GeoJSON and push to main (triggers GitHub Pages deploy).
-AUTO_PUBLISH_MAP=true
+# Commit map metadata after Studio review (default: manual — run scripts/publish-map-metadata.sh).
+AUTO_PUBLISH_MAP=false

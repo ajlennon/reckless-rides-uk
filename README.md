@@ -209,7 +209,7 @@ DEB-20260623T080303Z_53.4092N_2.9778W_001_MANIFEST.json ← register/manifests/
 git clone --recurse-submodules git@github.com:DynamicDevices/reckless-rides-uk.git
 cd reckless-rides-uk
 pip3 install --user deface
-pip3 install --user -r requirements-youtube.txt   # for automated YouTube upload
+python3.10 -m pip install --user -r requirements-youtube.txt   # YouTube API (systemd/import watcher)
 pip3 install -e "./core[dev]"                     # optional: probe-media CLI
 # ffmpeg/ffprobe already on system
 ```
@@ -246,6 +246,12 @@ New `.MOV` / `.mp4` files are **auto-ingested** (face blur, register, manifest).
 
 You still review on YouTube Studio and set **public** manually when ready. Nothing uploads as public without `--confirm-public-bypass`.
 
+Then update the public map (sync privacy, commit metadata, deploy site):
+
+```bash
+./scripts/publish-map-metadata.sh
+```
+
 **One-time setup:**
 
 ```bash
@@ -267,7 +273,7 @@ systemctl --user status reckless-rides-import-watcher.service
 tail -f register/import-inbox.log
 ```
 
-Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` to change inbox path, poll interval, `AUTO_YOUTUBE_UPLOAD=false` to disable YouTube automation, or `AUTO_PUBLISH_MAP=false` to skip auto-commit/push of map metadata after upload.
+Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` to change inbox path, poll interval, or `AUTO_YOUTUBE_UPLOAD=false` to disable YouTube automation. Map publish is **manual after Studio review** by default (`AUTO_PUBLISH_MAP=false`).
 
 **Upload backlog manually:**
 
@@ -285,7 +291,11 @@ Config: copy `config/import-inbox.conf.example` → `config/import-inbox.conf` t
 4. Save as `config/client_secret.json` (see `config/client_secret.json.example`)
 5. First upload opens a browser to authorise; token saved to `config/youtube-token.json` (gitignored)
 
-Create playlist **`Reckless Rides UK 2026`** in YouTube Studio once (script adds videos to it by name; name from `channel/upload-playlist.txt`).
+Playlist name from `channel/upload-playlist.txt` (**Reckless Rides UK 2026**). Upload creates the playlist if missing; one-time backfill for existing videos:
+
+```bash
+./scripts/ensure-youtube-playlist.sh
+```
 
 **After ingest + review of `*_PROCESSED.mp4`:**
 

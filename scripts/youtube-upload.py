@@ -110,6 +110,23 @@ def find_playlist_id(youtube, title: str) -> str | None:
             return None
 
 
+def ensure_playlist_id(youtube, title: str) -> str:
+    pid = find_playlist_id(youtube, title)
+    if pid:
+        return pid
+    resp = youtube.playlists().insert(
+        part="snippet,status",
+        body={
+            "snippet": {
+                "title": title,
+                "description": "Reckless Rides UK incident clips (2026).",
+            },
+            "status": {"privacyStatus": "public"},
+        },
+    ).execute()
+    return resp["id"]
+
+
 def add_to_playlist(youtube, playlist_id: str, video_id: str) -> None:
     youtube.playlistItems().insert(
         part="snippet",
@@ -256,12 +273,9 @@ def main() -> int:
 
         playlist_name = yt.get("playlist")
         if playlist_name:
-            pid = find_playlist_id(youtube, playlist_name)
-            if pid:
-                add_to_playlist(youtube, pid, video_id)
-                print(f"Playlist : {playlist_name}")
-            else:
-                print(f"Playlist not found (create in Studio): {playlist_name}", file=sys.stderr)
+            pid = ensure_playlist_id(youtube, playlist_name)
+            add_to_playlist(youtube, pid, video_id)
+            print(f"Playlist : {playlist_name}")
 
         record_upload_in_meta(meta, video_id, url, uploaded_utc, privacy)
         upload_path.write_text(json.dumps(meta, indent=2) + "\n")
@@ -275,7 +289,10 @@ def main() -> int:
         )
 
         if privacy == "private":
-            print("\nReview in YouTube Studio (confirm under Videos, not Shorts), then set PUBLIC.")
+            print(
+                "\nReview in YouTube Studio (confirm under Videos, not Shorts), set PUBLIC, "
+                "then run: ./scripts/publish-map-metadata.sh"
+            )
         return 0
     except HttpError as e:
         print(f"YouTube API error: {e}", file=sys.stderr)

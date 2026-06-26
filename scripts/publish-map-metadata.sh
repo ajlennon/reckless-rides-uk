@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Rebuild public map GeoJSON and commit/push *_UPLOAD.json after YouTube uploads.
+# After Studio review: sync YouTube privacy, rebuild map GeoJSON, commit and push.
+# Run manually once clips are PUBLIC in YouTube Studio (not on upload).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -7,6 +8,10 @@ CORE="${CORE:-$ROOT/core}"
 export PYTHONPATH="${CORE}${PYTHONPATH:+:$PYTHONPATH}"
 LOG="${RRUK_IMPORT_LOG:-$ROOT/register/import-inbox.log}"
 GEOJSON="$ROOT/docs/data/incidents.geojson"
+
+# shellcheck source=resolve-youtube-python.sh
+source "$ROOT/scripts/resolve-youtube-python.sh"
+YOUTUBE_PY="$(resolve_youtube_python)"
 
 log() {
   printf '%s %s\n' "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" | tee -a "$LOG"
@@ -21,7 +26,7 @@ publish_map_metadata() {
   fi
 
   log "map publish start: sync YouTube privacy"
-  if ! "$ROOT/scripts/sync-youtube-privacy.py" 2>&1 | tee -a "$LOG"; then
+  if ! "$YOUTUBE_PY" "$ROOT/scripts/sync-youtube-privacy.py" 2>&1 | tee -a "$LOG"; then
     log "map publish warning: privacy sync failed (continuing)"
   fi
 
