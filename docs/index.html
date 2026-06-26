@@ -5,25 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reckless Rides UK — incident map</title>
   <meta name="description" content="Map of documented pavement and road cycling incidents in the UK. Awareness, evidence, and road safety.">
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Reckless Rides UK">
+  <meta property="og:title" content="Reckless Rides UK — incident map">
+  <meta property="og:description" content="Nationwide UK evidence map — dangerous and illegal cycling. Anonymised clips on YouTube. Awareness · Evidence · Change.">
+  <meta property="og:url" content="https://recklessrides.uk/">
+  <meta property="og:image" content="https://recklessrides.uk/img/og.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Reckless Rides UK — incident map">
+  <meta name="twitter:description" content="Nationwide UK evidence map — dangerous and illegal cycling.">
+  <meta name="twitter:image" content="https://recklessrides.uk/img/og.png">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header>
     <h1>Reckless Rides UK</h1>
     <p class="tagline">Awareness · Evidence · Change</p>
-    <p class="subtitle">Nationwide UK evidence project — dangerous &amp; illegal cycling · Awareness · Evidence · Change</p>
-    <p class="operator">Data controller: <strong>Dynamic Devices Ltd</strong> (registered in England &amp; Wales) · ICO register <strong>ZC180994</strong> (Tier 1 micro)</p>
+    <p class="operator">Dynamic Devices Ltd · ICO register <strong>ZC180994</strong></p>
     <nav>
-      <a href="https://www.youtube.com/@Reckless-Rides-UK" target="_blank" rel="noopener noreferrer">YouTube (@Reckless-Rides-UK)</a>
-      <a href="https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md" target="_blank" rel="noopener noreferrer">Compliance statement</a>
-      <a href="https://github.com/DynamicDevices/reckless-rides-uk" target="_blank" rel="noopener noreferrer">Project on GitHub</a>
+      <a href="https://www.youtube.com/@Reckless-Rides-UK" target="_blank" rel="noopener noreferrer">YouTube</a>
+      <a href="https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md" target="_blank" rel="noopener noreferrer">Compliance</a>
+      <a href="https://github.com/DynamicDevices/reckless-rides-uk" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a href="mailto:ajlennon@dynamicdevices.co.uk">Privacy / takedown</a>
     </nav>
   </header>
 
+  <div class="map-toolbar" role="group" aria-label="Filter incidents by recorded date">
+    <span class="toolbar-label">Recorded</span>
+    <button type="button" class="filter-btn" data-period="all" aria-pressed="false">All</button>
+    <button type="button" class="filter-btn" data-period="7d" aria-pressed="false">7 days</button>
+    <button type="button" class="filter-btn" data-period="30d" aria-pressed="true">30 days</button>
+    <button type="button" class="filter-btn" data-period="365d" aria-pressed="false">1 year</button>
+  </div>
+
   <div id="map" role="application" aria-label="Incident map"></div>
   <p class="map-meta" id="incident-count">Loading incidents…</p>
+
+  <section class="incident-list-section" aria-labelledby="incident-list-heading">
+    <h2 id="incident-list-heading">Incidents</h2>
+    <ul id="incident-list" class="incident-list"></ul>
+  </section>
 
   <main>
     <h2>About this map</h2>
@@ -33,7 +58,7 @@
       Clips are anonymised (faces blurred) before publication on YouTube.
       Original footage is retained privately and may be shared with police when reported via 101.
     </p>
-    <p>Only incidents with a published YouTube video appear here. Each pin links to the clip on YouTube (video is not played on this page). Pins show approximate incident location from device GPS at time of recording — not home addresses.</p>
+    <p>Only <strong>public</strong> YouTube videos appear here. Each pin links to the clip on YouTube (video is not played on this page). Pins show approximate incident location from device GPS at time of recording — not home addresses.</p>
     <ul>
       <li>Factual evidence only — no naming or shaming</li>
       <li>Report danger: <strong>999</strong> · Non-emergency: <strong>101</strong></li>
@@ -41,15 +66,9 @@
     </ul>
     <h2>Operator &amp; data protection</h2>
     <p>
-      Reckless Rides UK is a nationwide UK evidence project — focussing on dangerous and
-      illegal cycling and crowd-sourcing incidents without naming any individuals.
-      <strong>Our mission:</strong> Awareness · Evidence · Change.
-    </p>
-    <p>
-      <strong>Data controller:</strong> Dynamic Devices Ltd (registered in England &amp; Wales).
-      ICO register: Dynamic Devices Limited, reference <strong>ZC180994</strong> (Tier 1 micro). Each video is reviewed before public
-      release. Faces are blurred on publication; originals are retained privately and may be
-      shared with police when reported via 101.
+      Reckless Rides UK is operated by <strong>Dynamic Devices Ltd</strong> (England &amp; Wales).
+      ICO register: Dynamic Devices Limited, reference <strong>ZC180994</strong> (Tier 1 micro).
+      Each video is reviewed before public release.
     </p>
     <p>
       <a href="https://github.com/DynamicDevices/reckless-rides-uk/blob/main/COMPLIANCE-STATEMENT.md">Compliance &amp; standards statement</a>
@@ -57,20 +76,17 @@
       <a href="https://github.com/DynamicDevices/reckless-rides-uk/blob/main/UK-COMPLIANCE.md">UK compliance record</a>
       ·
       <a href="mailto:ajlennon@dynamicdevices.co.uk">Privacy / takedown</a>
-      — constructive feedback on legal and platform compliance is welcome.
     </p>
   </main>
 
   <footer>
-    Dynamic Devices Ltd · ICO register ZC180994 (Tier 1 micro) ·
-    Map data from anonymised incident logs.
-    <a href="https://www.youtube.com/@Reckless-Rides-UK" target="_blank" rel="noopener noreferrer">YouTube (@Reckless-Rides-UK)</a>
-    ·
-    © OpenStreetMap contributors.
-    <a href="https://www.openstreetmap.org/copyright">OpenStreetMap copyright</a>.
+    Dynamic Devices Ltd · ICO ZC180994 ·
+    <a href="https://www.youtube.com/@Reckless-Rides-UK" target="_blank" rel="noopener noreferrer">YouTube</a>
+    · © OpenStreetMap contributors
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin=""></script>
   <script src="js/map.js"></script>
 </body>
 </html>

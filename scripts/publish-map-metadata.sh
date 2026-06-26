@@ -20,6 +20,11 @@ publish_map_metadata() {
     return 1
   fi
 
+  log "map publish start: sync YouTube privacy"
+  if ! "$ROOT/scripts/sync-youtube-privacy.py" 2>&1 | tee -a "$LOG"; then
+    log "map publish warning: privacy sync failed (continuing)"
+  fi
+
   log "map publish start: rebuild geojson"
   python3 "$ROOT/scripts/build-map-data.py"
 

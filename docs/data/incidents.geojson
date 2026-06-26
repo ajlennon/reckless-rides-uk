@@ -17,6 +17,7 @@
         "recorded_utc": "2026-06-23T08:03:03Z",
         "recorded_bst": "2026-06-23 09:03:03 BST",
         "youtube_url": "https://www.youtube.com/watch?v=J8sZmyFdlcI",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4092,-2.9778"
       }
     },
@@ -36,6 +37,7 @@
         "recorded_utc": "2026-06-23T14:32:59Z",
         "recorded_bst": "2026-06-23 15:32:59 BST",
         "youtube_url": "https://www.youtube.com/watch?v=-XZQyazcuBU",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4094,-2.9749"
       }
     },
@@ -55,6 +57,7 @@
         "recorded_utc": "2026-06-23T14:36:50Z",
         "recorded_bst": "2026-06-23 15:36:50 BST",
         "youtube_url": "https://www.youtube.com/watch?v=MdCFWZKUVgg",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4086,-2.9790"
       }
     },
@@ -74,6 +77,7 @@
         "recorded_utc": "2026-06-25T09:03:34Z",
         "recorded_bst": "2026-06-25 10:03:34 BST",
         "youtube_url": "https://www.youtube.com/watch?v=ALS_Yy7NUII",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4075,-2.9790"
       }
     },
@@ -93,6 +97,7 @@
         "recorded_utc": "2026-06-25T09:08:07Z",
         "recorded_bst": "2026-06-25 10:08:07 BST",
         "youtube_url": "https://www.youtube.com/watch?v=9clBkygUeWk",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4092,-2.9752"
       }
     },
@@ -112,6 +117,7 @@
         "recorded_utc": "2026-06-25T09:11:47Z",
         "recorded_bst": "2026-06-25 10:11:47 BST",
         "youtube_url": "https://www.youtube.com/watch?v=Sr4hU5zlU1c",
+        "youtube_privacy": "public",
         "map_url": "https://www.google.com/maps?q=53.4099,-2.9710"
       }
     }

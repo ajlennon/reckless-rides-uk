@@ -43,18 +43,10 @@ header .tagline {
   font-size: 0.9rem;
 }
 
-header .subtitle {
+header .operator {
   margin: 0.35rem 0 0;
   color: var(--muted);
-  font-size: 0.85rem;
-  max-width: 42rem;
-}
-
-header .operator {
-  margin: 0.5rem 0 0;
-  color: var(--muted);
   font-size: 0.8rem;
-  max-width: 42rem;
 }
 
 header .operator strong {
@@ -70,10 +62,48 @@ header nav {
   font-size: 0.875rem;
 }
 
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-right: 0.25rem;
+}
+
+.filter-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  border-color: var(--link);
+}
+
+.filter-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
 #map {
   width: 100%;
-  height: min(62vh, 520px);
-  min-height: 320px;
+  height: min(58vh, 480px);
+  min-height: 300px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -83,6 +113,46 @@ header nav {
   color: var(--muted);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+
+.incident-list-section {
+  max-width: 720px;
+  padding: 1rem 1.25rem 0.5rem;
+}
+
+.incident-list-section h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+}
+
+.incident-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.incident-item {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.incident-when {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.incident-title {
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.list-empty {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0;
 }
 
 main {
@@ -123,6 +193,19 @@ footer a {
   border-radius: 6px;
 }
 
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background-color: rgba(229, 62, 62, 0.35);
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background-color: rgba(116, 42, 42, 0.85);
+  color: #fff;
+}
+
 .popup-title {
   margin: 0 0 0.35rem;
   font-weight: 600;
@@ -149,10 +232,18 @@ footer a {
 
 @media (min-width: 768px) {
   header,
+  .map-toolbar,
   .map-meta,
+  .incident-list-section,
   main,
   footer {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .incident-item {
+    grid-template-columns: 11rem 1fr auto;
+    align-items: baseline;
+    gap: 1rem;
   }
 }

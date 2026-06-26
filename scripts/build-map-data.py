@@ -20,6 +20,7 @@ def main() -> int:
         PROCESSED,
         OUT,
         require_youtube_url=True,
+        require_public_youtube=True,
     )
     print(f"Wrote {count} incident(s) -> {OUT.relative_to(ROOT)}")
     return 0
